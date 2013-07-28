@@ -1,0 +1,22 @@
+{
+    "name": "wookieb/zorro-data-schema",
+    "description": "Library to extract data from objects and create objects from raw data based on schema",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Łukasz Kużyński 'wookieb'",
+            "email": "lukasz.kuzynski@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/config": "2.3.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Wookieb\\ZorroDataSchema": "src"
+        }
+    }
+}
