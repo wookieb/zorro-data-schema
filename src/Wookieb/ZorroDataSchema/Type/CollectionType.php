@@ -1,8 +1,9 @@
 <?php
 
-namespace Wookieb\ZorroDataSchema\Type\Standard;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
+namespace Wookieb\ZorroDataSchema\Type;
+use Wookieb\ZorroDataSchema\Exception\InvalidTypeException;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
+use Wookieb\ZorroDataSchema\Type\TypeInterface;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
@@ -13,15 +14,24 @@ class CollectionType implements TypeInterface
      * @var TypeInterface
      */
     private $type;
+    private $name;
 
-    private $validationErrors = array();
+    public function __construct($name)
+    {
+        $name = array_map('trim', (array)$name);
+        $name = array_filter($name);
+        if ($name === array()) {
+            throw new InvalidTypeException('Name of collection type cannot be blank');
+        }
+        $this->name = $name;
+    }
 
     /**
      * {@inheritDoc}
      */
     public function getName()
     {
-        return array('collection', 'array');
+        return $this->name;
     }
 
     /**
@@ -57,26 +67,6 @@ class CollectionType implements TypeInterface
             $collection[] = $this->type->extract($entry);
         }
         return $collection;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isValid()
-    {
-        $this->validationErrors = array();
-        if (!$this->type) {
-            $this->validationErrors[] = 'No type';
-        }
-        return !(bool)$this->validationErrors;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getValidationErrors()
-    {
-        return $this->validationErrors;
     }
 
     /**

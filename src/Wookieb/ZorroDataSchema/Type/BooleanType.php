@@ -1,14 +1,13 @@
 <?php
 
-namespace Wookieb\ZorroDataSchema\Type\Standard;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
-use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
+namespace Wookieb\ZorroDataSchema\Type;
+use Wookieb\ZorroDataSchema\Type\AlwaysValidType;
 
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class BooleanType extends AlwaysValidType
+class BooleanType implements TypeInterface
 {
     /**
      * {@inheritDoc}

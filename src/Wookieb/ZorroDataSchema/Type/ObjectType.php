@@ -1,9 +1,9 @@
 <?php
 
-namespace Wookieb\ZorroDataSchema\Type\Standard;
-use Wookieb\ZorroDataSchema\Definition\DefinitionInterface;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
+namespace Wookieb\ZorroDataSchema\Type;
+use Wookieb\ZorroDataSchema\Type\PropertyDefinition\PropertyDefinitionInterface;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
+use Wookieb\ZorroDataSchema\Type\TypeInterface;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
@@ -17,14 +17,13 @@ class ObjectType implements TypeInterface
     private $reflection;
     private $reflectionProperties = array();
 
-    public function setName($name)
+
+    public function __construct($name)
     {
-        $name = (array)$name;
-        foreach ($name as &$n) {
-            $n = trim($n);
-        }
-        if (!$name) {
-            throw new \InvalidArgumentException('Object definition name cannot be blank');
+        $name = array_map('trim', (array)$name);
+        $name = array_filter($name);
+        if ($name === array()) {
+            throw new \InvalidArgumentException('Object type name cannot be blank');
         }
         $this->name = $name;
         return $this;
@@ -58,7 +57,7 @@ class ObjectType implements TypeInterface
 
         $object = $this->getReflection()->newInstanceWithoutConstructor();
         foreach ($this->properties as $propertyName => $definition) {
-            /* @var DefinitionInterface $definition */
+            /* @var PropertyDefinitionInterface $definition */
             $reflectionProperty = $this->getReflectionProperty($propertyName);
             $propertyValue = isset($data[$propertyName]) ? $data[$propertyName] : null;
             $reflectionProperty->setValue($object, $definition->create($propertyValue));
@@ -103,7 +102,7 @@ class ObjectType implements TypeInterface
 
         $data = array();
         foreach ($this->properties as $propertyName => $definition) {
-            /* @var DefinitionInterface $definition */
+            /* @var PropertyDefinitionInterface $definition */
             $reflectionProperty = $this->getReflectionProperty($propertyName);
             $data[$propertyName] = $definition->extract($reflectionProperty->getValue($value));
         }
@@ -114,10 +113,10 @@ class ObjectType implements TypeInterface
      * Set property definition
      *
      * @param string $name property nae
-     * @param DefinitionInterface $definition
+     * @param PropertyDefinitionInterface $definition
      * @return self
      */
-    public function setProperty($name, DefinitionInterface $definition)
+    public function setProperty($name, PropertyDefinitionInterface $definition)
     {
         $this->properties[$name] = $definition;
         return $this;

@@ -1,12 +1,12 @@
 <?php
-namespace Wookieb\ZorroDataSchema\Definition;
+namespace Wookieb\ZorroDataSchema\Type\PropertyDefinition;
 use Wookieb\ZorroDataSchema\Exception\NoDefaultValueException;
 use Wookieb\ZorroDataSchema\Type\TypeInterface;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-interface DefinitionInterface
+interface PropertyDefinitionInterface
 {
     /**
      * Set type of definition

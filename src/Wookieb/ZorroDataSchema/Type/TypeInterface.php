@@ -8,11 +8,18 @@ use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 interface TypeInterface
 {
     /**
-     * Returns definition name(s)
+     * Returns type name
      *
-     * @return string|array
+     * @return string
      */
     function getName();
+
+    /**
+     * Returns aliases for this type
+     *
+     * @return array
+     */
+    function getAliases();
 
     /**
      * Create value from data
@@ -31,20 +38,6 @@ interface TypeInterface
      * @throws InvalidValueException
      */
     function extract($value);
-
-    /**
-     * Check whether definition is valid
-     *
-     * @return boolean
-     */
-    function isValid();
-
-    /**
-     * Return list of error messages
-     *
-     * @return array
-     */
-    function getValidationErrors();
 
     /**
      * Check whether value is type of target type

@@ -1,21 +1,20 @@
 <?php
 
-namespace Wookieb\ZorroDataSchema\Type\Standard;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
+namespace Wookieb\ZorroDataSchema\Type;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
-
+use Wookieb\ZorroDataSchema\Type\AlwaysValidType;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class IntegerType extends AlwaysValidType
+class FloatType implements TypeInterface
 {
     /**
      * {@inheritDoc}
      */
     public function getName()
     {
-        return array('integer', 'int');
+        return array('float', 'double');
     }
 
     /**
@@ -24,9 +23,9 @@ class IntegerType extends AlwaysValidType
     public function create($data)
     {
         if (!$this->isValidData($data)) {
-            throw new InvalidValueException('Invalid data to create an integer. Only scalar data allowed');
+            throw new InvalidValueException('Invalid data to create a float. Only scalar values allowed');
         }
-        return (int)$data;
+        return (float)$data;
     }
 
     private function isValidData($value)
@@ -42,7 +41,7 @@ class IntegerType extends AlwaysValidType
         if (!$this->isValidData($value)) {
             throw new InvalidValueException('Invalid value to extract. Only scalar values allowed');
         }
-        return (int)$value;
+        return (float)$value;
     }
 
     /**
@@ -50,8 +49,6 @@ class IntegerType extends AlwaysValidType
      */
     public function isTargetType($value)
     {
-        return is_int($value);
+        return is_float($value);
     }
-
-
 }

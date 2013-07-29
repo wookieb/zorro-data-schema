@@ -1,14 +1,13 @@
 <?php
 
-namespace Wookieb\ZorroDataSchema\Definition;
+namespace Wookieb\ZorroDataSchema\Type\PropertyDefinition;
 use Wookieb\ZorroDataSchema\Type\TypeInterface;
 use Wookieb\ZorroDataSchema\Exception\NoDefaultValueException;
-
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class Definition implements DefinitionInterface
+class PropertyDefinition implements PropertyDefinitionInterface
 {
     /**
      * @var TypeInterface
@@ -18,15 +17,16 @@ class Definition implements DefinitionInterface
     private $defaultValue;
     private $isNullable = false;
 
-    public function __construct(TypeInterface $type = null)
+    public function __construct(TypeInterface $type)
     {
-        if ($type) {
-            $this->setType($type);
-        }
+        $this->setType($type);
     }
 
     /**
-     * {@inheritDoc}
+     * Set type of definition
+     *
+     * @param TypeInterface $type
+     * @return self
      */
     public function setType(TypeInterface $type)
     {

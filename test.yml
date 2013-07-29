@@ -1,0 +1,10 @@
+objects:
+
+  Address:
+    street: string
+    city: string
+
+  User:
+    id: integer
+    name: string
+    addresses: array[Address]

@@ -4,7 +4,7 @@ namespace Wookieb\ZorroDataSchema\Exception;
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class InvalidDefinitionException extends ZorroDataSchemaException
+class InvalidTypeException extends ZorroDataSchemaException
 {
     private $errors = array();
 
