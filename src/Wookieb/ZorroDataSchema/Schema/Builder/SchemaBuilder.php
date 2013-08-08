@@ -1,88 +1,79 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\Loader\DelegatingLoader;
-use Symfony\Component\Config\Loader\LoaderResolver;
+use Assert\Assertion;
+use Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeException;
+use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMap;
 use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMapInterface;
-use Wookieb\ZorroDataSchema\Schema\Builder\Loaders\SchemaLoaderInterface;
+use Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\ClassMapAwareInterface;
+use Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\SchemaBuilderAwareInterface;
+use Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\TypeBuilderInterface;
+use Wookieb\ZorroDataSchema\Schema\Schema;
 use Wookieb\ZorroDataSchema\Schema\SchemaInterface;
-use Wookieb\ZorroDataSchema\Type\ObjectType;
-use Wookieb\ZorroDataSchema\Type\PropertyDefinition\PropertyDefinition;
+use Wookieb\ZorroDataSchema\SchemaOutline\SchemaOutlineInterface;
+use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface;
+use Wookieb\ZorroDataSchema\Type\TypeInterface;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class SchemaBuilder
 {
-    protected $schema;
-    protected $loadingContext;
-    protected $loader;
-    protected $classMap;
-    protected $processor;
-    protected $configDefinition;
+    private $schemaOutline;
+    /**
+     * @var SchemaInterface
+     */
+    private $schema;
+    private $typeBuilders = array();
 
-    public function __construct(SchemaInterface $schema, ConfigurationInterface $config = null)
+
+    public function __construct(SchemaOutlineInterface $schemaOutline)
     {
-        $this->schema = $schema;
-        $this->loadingContext = new LoadingContext();
-        $this->loaderResolver = new LoaderResolver();
-        $this->loader = new DelegatingLoader($this->loaderResolver);
-        $this->processor = new Processor();
-        $this->configDefinition = $config ? : new SchemaConfiguration();
+        $this->schemaOutline = $schemaOutline;
     }
 
-    public function addLoader(SchemaLoaderInterface $loader)
+    public function registerTypeBuilder(TypeBuilderInterface $typeBuilder, $priority = 0)
     {
-        $loader->setLoadingContext($this->loadingContext);
-        $this->loaderResolver->addLoader($loader);
+        if ($typeBuilder instanceof SchemaBuilderAwareInterface) {
+            $typeBuilder->setSchemaBuilder($this);
+        }
+        $this->typeBuilders[$priority][] = $typeBuilder;
+        krsort($this->typeBuilders);
         return $this;
     }
 
-    public function getClassMap()
+    /**
+     * @param TypeOutlineInterface $typeOutline
+     * @throws UnableToGenerateTypeException
+     * @return TypeInterface
+     */
+    public function generateType(TypeOutlineInterface $typeOutline)
     {
-        return $this->classMap;
-    }
-
-    public function load($file)
-    {
-        $config = $this->loader->load($file);
-        $config = $this->processor->processConfiguration($this->configDefinition, $config);
-        $this->buildSchemaFromConfig($config);
-    }
-
-    protected function buildSchemaFromConfig(array $config)
-    {
-        if (isset($config['objects'])) {
-            $this->buildObjects($config['objects']);
+        if ($this->schema->hasType($typeOutline->getName())) {
+            return $this->schema->getType($typeOutline->getName());
         }
-    }
 
-    protected function buildObjects(array $objects)
-    {
-        foreach ($objects as $objectName => $properties) {
-            $type = new ObjectType($objectName);
-            foreach ($properties as $propertyName => $propertyDefinition) {
-                $propertyType = $this->schema->getType($propertyDefinition['type']);
-
-                $definition = new PropertyDefinition($propertyType);
-                if (array_key_exists('nullable', $propertyDefinition)) {
-                    $definition->setIsNullable($propertyDefinition['nullable']);
+        foreach ($this->typeBuilders as $builders) {
+            foreach ($builders as $builder) {
+                /* @var \Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\TypeBuilderInterface $builder */
+                if ($builder->isAbleToGenerate($typeOutline)) {
+                    return $builder->generate($typeOutline);
                 }
-                if (array_key_exists('default', $propertyDefinition)) {
-                    $definition->setDefaultValue($propertyDefinition['default']);
-                }
-
-                $type->setProperty($propertyName, $definition);
             }
-            $this->schema->registerType($type);
         }
+
+        $msg = 'There is no type builder able to handle "'.$typeOutline->getName().'" type outline';
+        throw new UnableToGenerateTypeException($msg, $typeOutline);
     }
 
-
-    public function getSchema()
+    public function build(SchemaInterface $schema = null)
     {
+        $this->schema = $schema ? : new Schema();
+        foreach ($this->schemaOutline as $typeOutline) {
+            /* @var \Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface $typeOutline */
+            $type = $this->generateType($typeOutline);
+            $this->schema->registerType($typeOutline->getName(), $type);
+        }
         return $this->schema;
     }
 }

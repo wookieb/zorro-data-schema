@@ -2,9 +2,13 @@
 
 namespace Wookieb\ZorroDataSchema\Type;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
-use Wookieb\ZorroDataSchema\Type\AlwaysValidType;
 
 /**
+ * Definition of string type
+ * Converts the following data to string:
+ * - objects with __toString method implemented
+ * - scalar values
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class StringType implements TypeInterface
@@ -12,21 +16,9 @@ class StringType implements TypeInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
-    {
-        return 'string';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function create($data)
     {
-        if (!$this->isValidData($data)) {
-            $msg = 'Invalid data to create a string. Only scalar values and objects with __toString allowed';
-            throw new InvalidValueException($msg);
-        }
-        return (string)$data;
+        return $this->convert($data, 'create a string');
     }
 
     private function isValidData($value)
@@ -36,16 +28,21 @@ class StringType implements TypeInterface
         return $isStringableObject || $isScalar;
     }
 
+    private function convert($value, $to)
+    {
+        if (!$this->isValidData($value)) {
+            $msg = 'Invalid data to '.$to.'. Only scalar values and objects with __toString allowed';
+            throw new InvalidValueException($msg);
+        }
+        return (string)$value;
+    }
+
     /**
      * {@inheritDoc}
      */
     public function extract($value)
     {
-        if (!$this->isValidData($value)) {
-            $msg = 'Invalid value to extract. Only scalar values and objects with __toString allowed';
-            throw new InvalidValueException($msg);
-        }
-        return (string)$value;
+        return $this->convert($value, 'extract');
     }
 
     /**

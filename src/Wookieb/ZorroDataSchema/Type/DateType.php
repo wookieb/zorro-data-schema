@@ -12,14 +12,6 @@ class DateType implements TypeInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
-    {
-        return 'date';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function create($data)
     {
         if ($data instanceof \DateTime) {

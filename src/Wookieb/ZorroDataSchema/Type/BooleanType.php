@@ -12,14 +12,6 @@ class BooleanType implements TypeInterface
     /**
      * {@inheritDoc}
      */
-    public function getName()
-    {
-        return array('boolean', 'bool');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function create($data)
     {
         return (bool)$data;

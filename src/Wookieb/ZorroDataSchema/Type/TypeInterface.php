@@ -8,21 +8,7 @@ use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 interface TypeInterface
 {
     /**
-     * Returns type name
-     *
-     * @return string
-     */
-    function getName();
-
-    /**
-     * Returns aliases for this type
-     *
-     * @return array
-     */
-    function getAliases();
-
-    /**
-     * Create value from data
+     * Creates local representation of given data
      *
      * @param mixed $data
      * @return mixed
@@ -31,7 +17,7 @@ interface TypeInterface
     function create($data);
 
     /**
-     * Extract data from value
+     * Creates global representation of given data
      *
      * @param mixed $value
      * @return mixed
@@ -40,7 +26,7 @@ interface TypeInterface
     function extract($value);
 
     /**
-     * Check whether value is type of target type
+     * Check whether value has type of target type
      *
      * @param mixed $value
      * @return boolean

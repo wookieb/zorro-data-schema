@@ -8,9 +8,16 @@
             "email": "lukasz.kuzynski@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/wookieb/assert"
+        }
+    ],
+    "minimum-stability": "dev",
     "require": {
         "symfony/config": "2.3.*",
-        "symfony/routing": "*",
+        "beberlei/assert": "dev-master",
         "php": ">=5.4.0"
     },
     "require-dev": {

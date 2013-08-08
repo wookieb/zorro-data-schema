@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Type;
+use Assert\Assertion;
 use Wookieb\ZorroDataSchema\Exception\InvalidTypeException;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 use Wookieb\ZorroDataSchema\Type\TypeInterface;
@@ -18,11 +19,7 @@ class CollectionType implements TypeInterface
 
     public function __construct($name)
     {
-        $name = array_map('trim', (array)$name);
-        $name = array_filter($name);
-        if ($name === array()) {
-            throw new InvalidTypeException('Name of collection type cannot be blank');
-        }
+        Assertion::notBlank($name, 'Name of collection cannot be empty');
         $this->name = $name;
     }
 

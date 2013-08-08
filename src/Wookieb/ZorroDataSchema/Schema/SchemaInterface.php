@@ -2,7 +2,7 @@
 
 
 namespace Wookieb\ZorroDataSchema\Schema;
-use Wookieb\ZorroDataSchema\Exception\NoSuchTypeException;
+use Wookieb\ZorroDataSchema\Exception\TypeNotExistsException;
 use Wookieb\ZorroDataSchema\Type\TypeInterface;
 
 
@@ -24,15 +24,16 @@ interface SchemaInterface extends \IteratorAggregate
      *
      * @param string $typeName
      * @return TypeInterface
-     * @throws NoSuchTypeException when type with name does not exists
+     * @throws TypeNotExistsException when type with name does not exists
      */
     function getType($typeName);
 
     /**
      * Register type of data for schema
      *
+     * @param string $name
      * @param TypeInterface $type
      * @return self
      */
-    function registerType(TypeInterface $type);
+    function registerType($name, TypeInterface $type);
 }

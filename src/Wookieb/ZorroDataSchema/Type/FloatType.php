@@ -9,13 +9,6 @@ use Wookieb\ZorroDataSchema\Type\AlwaysValidType;
  */
 class FloatType implements TypeInterface
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getName()
-    {
-        return array('float', 'double');
-    }
 
     /**
      * {@inheritDoc}

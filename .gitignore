@@ -3,5 +3,7 @@ TODO
 /vendor/
 composer.lock
 test.php
+test2.php
+test.yml
 examples/one_way.log
 examples/queue.log
