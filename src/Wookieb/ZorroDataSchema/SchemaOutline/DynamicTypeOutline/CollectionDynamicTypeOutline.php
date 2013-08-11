@@ -7,6 +7,12 @@ use Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeOutlineException;
 
 
 /**
+ * Generates collection type outline based on format "collection[<name_of_type>]"
+ * For example
+ * collection[string] = collection of strings
+ * collection[SomeClass] = collection of objects of instance SomeClass
+ * collection[collection[string]] = collection of collections of strings :)
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class CollectionDynamicTypeOutline implements DynamicTypeOutlineInterface
@@ -16,6 +22,9 @@ class CollectionDynamicTypeOutline implements DynamicTypeOutlineInterface
      */
     private $schemaOutline;
 
+    /**
+     * @param SchemaOutlineInterface $schemaOutline reference to current schema outline
+     */
     public function __construct(SchemaOutlineInterface $schemaOutline)
     {
         $this->schemaOutline = $schemaOutline;

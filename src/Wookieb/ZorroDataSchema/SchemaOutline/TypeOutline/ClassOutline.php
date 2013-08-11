@@ -1,8 +1,6 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
-use Assert\Assertion;
-
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
@@ -45,6 +43,8 @@ class ClassOutline extends AbstractTypeOutline
     }
 
     /**
+     * Set type outline of parent class
+     *
      * @param ClassOutline $class
      * @return self
      */
@@ -55,6 +55,8 @@ class ClassOutline extends AbstractTypeOutline
     }
 
     /**
+     * Returns type outline of parent class
+     *
      * @return ClassOutline
      */
     public function getParentClass()

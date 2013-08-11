@@ -11,6 +11,12 @@ class EnumOutline extends AbstractTypeOutline
 {
     private $options = array();
 
+    /**
+     * @param null|string $name
+     * @param array $options
+     *
+     * @throws \InvalidArgumentException when name is invalid or when enum does not contains at least 2 options
+     */
     public function __construct($name, array $options)
     {
         parent::__construct($name);
@@ -22,12 +28,6 @@ class EnumOutline extends AbstractTypeOutline
         }
     }
 
-    /**
-     * @param string $name
-     * @param integer $value
-     *
-     * @return self
-     */
     private function addOption($name, $value)
     {
         Assertion::notBlank('Option name cannot be empty');
@@ -37,6 +37,7 @@ class EnumOutline extends AbstractTypeOutline
     }
 
     /**
+     * Returns list of options of enum
      * @return array
      */
     public function getOptions()

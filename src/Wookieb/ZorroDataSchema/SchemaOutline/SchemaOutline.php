@@ -1,8 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline;
-use Traversable;
-use Wookieb\ZorroDataSchema\Exception\TypeOutlineNotExistsException;
+use Wookieb\ZorroDataSchema\Exception\TypeOutlineNotFoundException;
 use Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeOutlineException;
 use Wookieb\ZorroDataSchema\SchemaOutline\DynamicTypeOutline\DynamicTypeOutlineInterface;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface;
@@ -37,12 +36,10 @@ class SchemaOutline implements SchemaOutlineInterface
             try {
                 return $dynamicType->generate($name);
             } catch (UnableToGenerateTypeOutlineException $e) {
-                throw new TypeOutlineNotExistsException('Type outline with name "'.$name.'" does not exists', null, $e);
+                throw new TypeOutlineNotFoundException('Type outline "'.$name.'" not found', null, $e);
             }
-
         }
-
-        throw new TypeOutlineNotExistsException('Type outline with name "'.$name.'" does not exists');
+        throw new TypeOutlineNotFoundException('Type outline "'.$name.'" not found');
     }
 
     private function getDynamicTypeAbleToGenerate($name)
@@ -79,20 +76,11 @@ class SchemaOutline implements SchemaOutlineInterface
     }
 
     /**
-     * @param DynamicTypeOutlineInterface $dynamicType
-     * @return self
+     * {@inheritDoc}
      */
     public function addDynamicType(DynamicTypeOutlineInterface $dynamicType)
     {
         $this->dynamicTypes[] = $dynamicType;
         return $this;
-    }
-
-    /**
-     * @return \Traversable
-     */
-    public function getDynamicTypes()
-    {
-        return $this->dynamicTypes;
     }
 }

@@ -4,9 +4,10 @@ namespace Wookieb\ZorroDataSchema\SchemaOutline\Builder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-
 /**
- * Configuration for
+ * Configuration schema of schema outline files
+ *
+ * NOTE! Please do NOT autoformat this file
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class SchemaOutlineConfiguration implements ConfigurationInterface
@@ -18,7 +19,11 @@ class SchemaOutlineConfiguration implements ConfigurationInterface
     {
         $builder = new TreeBuilder();
         $root = $builder->root('zorro_rpc_schema');
-
+        /*******************************************
+         *
+         * NOTE! Please do NOT autoformat this file
+         *
+         *******************************************/
         $root
             ->children()
                 ->arrayNode('classes')
@@ -31,8 +36,6 @@ class SchemaOutlineConfiguration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('type')
                                             ->isRequired()
-                                        ->end()
-                                        ->scalarNode('extend')
                                         ->end()
                                         ->variableNode('default')
                                         ->end()
@@ -61,5 +64,4 @@ class SchemaOutlineConfiguration implements ConfigurationInterface
 
         return $builder;
     }
-
 }

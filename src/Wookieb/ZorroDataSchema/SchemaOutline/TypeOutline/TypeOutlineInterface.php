@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
-
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
@@ -10,7 +8,7 @@ namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
 interface TypeOutlineInterface
 {
     /**
-     * Returns name of type
+     * Returns name of type outline
      *
      * @return string
      */

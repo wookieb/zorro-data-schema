@@ -12,10 +12,11 @@ use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\Integer16Outline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\Integer32Outline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\Integer64Outline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\StringOutline;
-use Wookieb\ZorroDataSchema\Type\BooleanType;
 
 
 /**
+ * Schema outline with predefined list of basic types
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class BasicSchemaOutline extends SchemaOutline

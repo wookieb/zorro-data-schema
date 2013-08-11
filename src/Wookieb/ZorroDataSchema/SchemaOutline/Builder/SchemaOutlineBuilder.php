@@ -5,7 +5,10 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
 use Wookieb\ZorroDataSchema\Exception\InvalidTypeException;
-use Wookieb\ZorroDataSchema\SchemaOutline\Builder\Loaders\SchemaOutlineLoaderInterface;
+use Wookieb\ZorroDataSchema\Exception\SchemaOutlineLoadingException;
+use Wookieb\ZorroDataSchema\Exception\ZorroDataSchemaException;
+use Wookieb\ZorroDataSchema\Loader\LoadingContext;
+use Wookieb\ZorroDataSchema\Loader\ZorroLoaderInterface;
 use Wookieb\ZorroDataSchema\SchemaOutline\SchemaOutlineInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\ClassOutline;
@@ -17,10 +20,8 @@ use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\PropertyOutline;
  */
 class SchemaOutlineBuilder
 {
-    private $baseSchema;
-
-    private $loadingContext;
-
+    protected $baseSchema;
+    protected $loadingContext;
     private $resolver;
     private $loader;
 
@@ -34,18 +35,37 @@ class SchemaOutlineBuilder
         $this->processor = new Processor();
     }
 
-    public function registerLoader(SchemaOutlineLoaderInterface $loader)
+    /**
+     * Registers loader to load schema outline
+     *
+     * @param ZorroLoaderInterface $loader
+     * @return $this
+     */
+    public function registerLoader(ZorroLoaderInterface $loader)
     {
         $loader->setLoadingContext($this->loadingContext);
         $this->resolver->addLoader($loader);
         return $this;
     }
 
+    /**
+     * Loads file with schema outline definition
+     *
+     * @param string $file
+     * @return self
+     * @throws SchemaOutlineLoadingException when definition of schema outline is invalid
+     */
     public function load($file)
     {
         $config = $this->loader->load($file);
         $config = $this->processor->processConfiguration($this->configuration, $config);
-        $this->buildSchemaFromConfig($config);
+        try {
+            $this->buildSchemaFromConfig($config);
+        } catch (ZorroDataSchemaException $e) {
+            throw new SchemaOutlineLoadingException('Invalid definition of schema outline', null, $e);
+        }
+
+        return $this;
     }
 
     protected function buildSchemaFromConfig($config)

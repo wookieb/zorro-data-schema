@@ -2,8 +2,9 @@
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
 
-
 /**
+ * Outline of class property
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class PropertyOutline
@@ -14,12 +15,21 @@ class PropertyOutline
     private $defaultValue;
     private $hasDefaultValue = false;
 
+    /**
+     * @param string $name name of property
+     * @param TypeOutlineInterface $type
+     *
+     * @throws \InvalidArgumentException when name is invalid
+     */
     public function __construct($name, TypeOutlineInterface $type)
     {
         $this->setName($name);
         $this->setType($type);
     }
 
+    /**
+     * @return boolean
+     */
     public function hasDefaultValue()
     {
         return $this->hasDefaultValue;
@@ -44,11 +54,6 @@ class PropertyOutline
         return $this->defaultValue;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
     private function setName($name)
     {
         $name = trim($name);
@@ -68,6 +73,8 @@ class PropertyOutline
     }
 
     /**
+     * Set info whether property is allowed to be null
+     *
      * @param boolean $nullable
      * @return self
      */
@@ -78,6 +85,8 @@ class PropertyOutline
     }
 
     /**
+     * Returns info whether property is allowed to be null
+     *
      * @return boolean
      */
     public function isNullable()
