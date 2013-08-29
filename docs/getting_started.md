@@ -78,7 +78,7 @@ As you see above, the schema is extremely simple and does not provide enought in
 * what is the name of each accessor?
 
 This is the responsibility of "implementation details".
-Currently the only way to define implementation details is a
+Currently the only way to define implementation details is a YAML file.
 Each section (import, global, classes) in implementation details file is optional.
 
 ```yaml
