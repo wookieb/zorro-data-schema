@@ -1,8 +1,11 @@
 # Getting started with Zorro Data Schema
 
 [Creating schema](#creating-schema)
+
 [Creating implementation details](#creating-implementation-details)
+
 [Building schema object](#building-schema-object)
+
 [Caching schema](#caching-schema)
 
 <a name="emphasis"/>
