@@ -1,0 +1,17 @@
+enums:
+  UserStatus:
+    ACTIVE: 1
+    BANNED: 2
+    REMOVED: 3
+    INACTIVE: 4
+
+classes:
+  User:
+    properties:
+      name: string
+      lastname:
+        type: string
+        nullable: true
+      status:
+        type: UserStatus
+        default: INACTIVE

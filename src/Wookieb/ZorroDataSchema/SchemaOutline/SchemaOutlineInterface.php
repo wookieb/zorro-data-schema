@@ -17,7 +17,7 @@ interface SchemaOutlineInterface extends \IteratorAggregate
      * @return TypeOutlineInterface
      * @throws TypeOutlineNotFoundException
      */
-    function getType($name);
+    function getTypeOutline($name);
 
     /**
      * Check whether type outline with given name exists
@@ -25,7 +25,7 @@ interface SchemaOutlineInterface extends \IteratorAggregate
      * @param string $name
      * @return boolean
      */
-    function hasType($name);
+    function hasTypeOutline($name);
 
     /**
      * Add new type outline
@@ -33,7 +33,7 @@ interface SchemaOutlineInterface extends \IteratorAggregate
      * @param TypeOutlineInterface $type
      * @return self
      */
-    function addType(TypeOutlineInterface $type);
+    function addTypeOutline(TypeOutlineInterface $type);
 
     /**
      * Add dynamic type which generate type outline based on name
@@ -42,5 +42,5 @@ interface SchemaOutlineInterface extends \IteratorAggregate
      * @param DynamicTypeOutlineInterface $dynamicType
      * @return self
      */
-    function addDynamicType(DynamicTypeOutlineInterface $dynamicType);
+    function addDynamicTypeOutline(DynamicTypeOutlineInterface $dynamicType);
 }

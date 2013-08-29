@@ -33,7 +33,7 @@ class Styles
     public function getStyle($name)
     {
         if (!$this->hasStyle($name)) {
-            throw new \OutOfRangeException('Style with name "'.$name.'" does not exists');
+            throw new \OutOfRangeException('Style with name "'.$name.'" does not exist');
         }
         return $this->styles[$name];
     }

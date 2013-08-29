@@ -1,0 +1,8 @@
+classes:
+  User:
+    properties:
+      name: string
+      lastname: string
+
+  SuperUser:
+    extend: User

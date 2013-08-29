@@ -1,0 +1,6 @@
+import:
+  - included.yml
+
+classes:
+  Captain:
+    class: HomelyGear

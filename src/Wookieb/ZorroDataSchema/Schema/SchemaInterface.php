@@ -2,8 +2,8 @@
 
 
 namespace Wookieb\ZorroDataSchema\Schema;
-use Wookieb\ZorroDataSchema\Exception\TypeNotExistsException;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
+use Wookieb\ZorroDataSchema\Exception\TypeNotFoundException;
+use Wookieb\ZorroDataSchema\Schema\Type\TypeInterface;
 
 
 /**
@@ -12,7 +12,7 @@ use Wookieb\ZorroDataSchema\Type\TypeInterface;
 interface SchemaInterface extends \IteratorAggregate
 {
     /**
-     * Check whether type with given name exists
+     * Checks whether type with given name exists
      *
      * @param string $typeName
      * @return boolean
@@ -20,20 +20,22 @@ interface SchemaInterface extends \IteratorAggregate
     function hasType($typeName);
 
     /**
-     * Return type for given name
+     * Returns type for given name
      *
      * @param string $typeName
      * @return TypeInterface
-     * @throws TypeNotExistsException when type with name does not exists
+     * @throws TypeNotFoundException when type with name does not exist
      */
     function getType($typeName);
 
     /**
-     * Register type of data for schema
+     * Registers type of data for schema
      *
      * @param string $name
      * @param TypeInterface $type
      * @return self
+     *
+     * @throws \InvalidArgumentException when name of type is empty
      */
     function registerType($name, TypeInterface $type);
 }

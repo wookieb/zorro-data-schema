@@ -2,11 +2,13 @@
 
 namespace Wookieb\ZorroDataSchema\Schema;
 use Assert\Assertion;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
-use Wookieb\ZorroDataSchema\Exception\TypeNotExistsException;
+use Wookieb\ZorroDataSchema\Exception\TypeNotFoundException;
+use Wookieb\ZorroDataSchema\Schema\Type\TypeInterface;
 
 
 /**
+ * Standard schema implementation
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class Schema implements SchemaInterface
@@ -29,6 +31,7 @@ class Schema implements SchemaInterface
         if (isset($this->types[$typeName])) {
             return $this->types[$typeName];
         }
+        throw new TypeNotFoundException('Type "'.$typeName.'" does not exist');
     }
 
     /**

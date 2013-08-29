@@ -23,7 +23,7 @@ class CollectionDynamicTypeOutline implements DynamicTypeOutlineInterface
     private $schemaOutline;
 
     /**
-     * @param SchemaOutlineInterface $schemaOutline reference to current schema outline
+     * @param SchemaOutlineInterface $schemaOutline reference to current outline of schema
      */
     public function __construct(SchemaOutlineInterface $schemaOutline)
     {
@@ -45,16 +45,16 @@ class CollectionDynamicTypeOutline implements DynamicTypeOutlineInterface
     {
         $typeName = $this->extractTypeName($name);
         if (!$typeName) {
-            throw new UnableToGenerateTypeOutlineException('Undefined elements type name');
+            throw new UnableToGenerateTypeOutlineException('Invalid name to generate collection outline');
         }
-        $type = $this->schemaOutline->getType($typeName);
+        $type = $this->schemaOutline->getTypeOutline($typeName);
         return new CollectionOutline($name, $type);
     }
 
     private function extractTypeName($name)
     {
-        if (preg_match('/^(array|collection)\[(.+)\]$/i', $name, $matches)) {
-            return $matches[2];
+        if (preg_match('/^collection\<(.+)\>$/i', $name, $matches)) {
+            return $matches[1];
         }
     }
 }

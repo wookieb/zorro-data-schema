@@ -1,0 +1,10 @@
+classes:
+  SuperUser:
+    accessors: enabled
+    properties:
+      position:
+        setter: setPositionName
+      platform:
+        getter: getSuperUserPlatform
+      system:
+        as: operatingSystem

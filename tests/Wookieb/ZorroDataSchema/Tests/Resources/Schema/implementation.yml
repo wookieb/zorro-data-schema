@@ -1,0 +1,6 @@
+classes:
+  User:
+    class: User
+
+  SuperUser:
+    class: SuperUser

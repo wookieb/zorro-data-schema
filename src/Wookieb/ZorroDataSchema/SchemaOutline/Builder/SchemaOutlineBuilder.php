@@ -4,16 +4,15 @@ namespace Wookieb\ZorroDataSchema\SchemaOutline\Builder;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolver;
-use Wookieb\ZorroDataSchema\Exception\InvalidTypeException;
 use Wookieb\ZorroDataSchema\Exception\SchemaOutlineLoadingException;
 use Wookieb\ZorroDataSchema\Exception\ZorroDataSchemaException;
 use Wookieb\ZorroDataSchema\Loader\LoadingContext;
 use Wookieb\ZorroDataSchema\Loader\ZorroLoaderInterface;
+use Wookieb\ZorroDataSchema\SchemaOutline\BasicSchemaOutline;
+use Wookieb\ZorroDataSchema\SchemaOutline\DynamicTypeOutline\HoistClassDynamicTypeOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\SchemaOutlineInterface;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\ClassOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\EnumOutline;
-use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\PropertyOutline;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
@@ -24,15 +23,27 @@ class SchemaOutlineBuilder
     protected $loadingContext;
     private $resolver;
     private $loader;
+    /**
+     * @var HoistClassDynamicTypeOutline
+     */
+    protected $hoistingClass;
 
-    public function __construct(SchemaOutlineInterface $baseSchema, ConfigurationInterface $configuration = null)
+    public function __construct(SchemaOutlineInterface $baseSchema = null, ConfigurationInterface $configuration = null)
     {
-        $this->baseSchema = $baseSchema;
+        $this->baseSchema = $baseSchema ? : new BasicSchemaOutline();
         $this->loadingContext = new LoadingContext();
         $this->resolver = new LoaderResolver();
         $this->loader = new DelegatingLoader($this->resolver);
         $this->configuration = $configuration ? : new SchemaOutlineConfiguration();
         $this->processor = new Processor();
+
+        $this->initHoisting();
+    }
+
+    protected function initHoisting()
+    {
+        $this->hoistingClass = new HoistClassDynamicTypeOutline($this->baseSchema);
+        $this->baseSchema->addDynamicTypeOutline($this->hoistingClass);
     }
 
     /**
@@ -62,7 +73,7 @@ class SchemaOutlineBuilder
         try {
             $this->buildSchemaFromConfig($config);
         } catch (ZorroDataSchemaException $e) {
-            throw new SchemaOutlineLoadingException('Invalid definition of schema outline', null, $e);
+            throw new SchemaOutlineLoadingException('Invalid definition of schema outline in file "'.$file.'"', null, $e);
         }
 
         return $this;
@@ -80,27 +91,10 @@ class SchemaOutlineBuilder
 
     protected function buildClasses(array $classes)
     {
+        $this->hoistingClass->setClassesConfig($classes);
         foreach ($classes as $className => $classMeta) {
-            $parentClass = null;
-            if (isset($classMeta['extend'])) {
-                $parentClass = $this->baseSchema->getType($classMeta['extend']);
-                if (!$parentClass instanceof ClassOutline) {
-                    $msg = 'Parent class "'.$classMeta['extend'].'" must be a class outline instance';
-                    throw new InvalidTypeException(array($msg));
-                }
-            }
-            $classOutline = new ClassOutline($className, array(), $parentClass);
-            if (isset($classMeta['properties'])) {
-                foreach ($classMeta['properties'] as $propertyName => $property) {
-                    $propertyOutline = new PropertyOutline($propertyName, $this->baseSchema->getType($property['type']));
-                    if (isset($property['default'])) {
-                        $propertyOutline->setDefaultValue($property['default']);
-                    }
-                    $propertyOutline->setIsNullable($property['nullable']);
-                    $classOutline->addProperty($propertyOutline);
-                }
-            }
-            $this->baseSchema->addType($classOutline);
+            $classOutline = $this->hoistingClass->generate($className);
+            $this->baseSchema->addTypeOutline($classOutline);
         }
     }
 
@@ -108,12 +102,17 @@ class SchemaOutlineBuilder
     {
         foreach ($enums as $enumName => $options) {
             $enumOutline = new EnumOutline($enumName, $options);
-            $this->baseSchema->addType($enumOutline);
+            $this->baseSchema->addTypeOutline($enumOutline);
         }
     }
 
     public function build()
     {
         return $this->baseSchema;
+    }
+
+    public function getResources()
+    {
+        return $this->loadingContext->getResources();
     }
 }

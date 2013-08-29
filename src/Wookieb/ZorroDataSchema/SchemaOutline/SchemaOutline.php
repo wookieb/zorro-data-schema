@@ -25,7 +25,7 @@ class SchemaOutline implements SchemaOutlineInterface
     /**
      * {@inheritDoc}
      */
-    public function getType($name)
+    public function getTypeOutline($name)
     {
         if ($this->isDefinedType($name)) {
             return $this->types[$name];
@@ -56,7 +56,7 @@ class SchemaOutline implements SchemaOutlineInterface
     /**
      * {@inheritDoc}
      */
-    public function hasType($name)
+    public function hasTypeOutline($name)
     {
         return $this->isDefinedType($name) || (bool)$this->getDynamicTypeAbleToGenerate($name);
     }
@@ -69,7 +69,7 @@ class SchemaOutline implements SchemaOutlineInterface
     /**
      * {@inheritDoc}
      */
-    public function addType(TypeOutlineInterface $type)
+    public function addTypeOutline(TypeOutlineInterface $type)
     {
         $this->types[$type->getName()] = $type;
         return $this;
@@ -78,7 +78,7 @@ class SchemaOutline implements SchemaOutlineInterface
     /**
      * {@inheritDoc}
      */
-    public function addDynamicType(DynamicTypeOutlineInterface $dynamicType)
+    public function addDynamicTypeOutline(DynamicTypeOutlineInterface $dynamicType)
     {
         $this->dynamicTypes[] = $dynamicType;
         return $this;

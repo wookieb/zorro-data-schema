@@ -30,7 +30,7 @@ class EnumOutline extends AbstractTypeOutline
 
     private function addOption($name, $value)
     {
-        Assertion::notBlank('Option name cannot be empty');
+        Assertion::notBlank($name, 'Option name cannot be empty');
         $value = (int)$value;
         $this->options[$name] = $value;
         return $this;

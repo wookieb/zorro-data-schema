@@ -5,7 +5,7 @@ namespace Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style;
 
 /**
  * Underscore style of setters
- * For exampla:
+ * For example:
  * $this->generateSetterName('CamelCase'); // camel_case
  *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>

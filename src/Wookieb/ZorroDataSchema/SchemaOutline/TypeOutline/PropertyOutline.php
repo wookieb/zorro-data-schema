@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
+use Assert\Assertion;
 
 /**
  * Outline of class property
@@ -37,10 +38,14 @@ class PropertyOutline
 
     /**
      * @param mixed $defaultValue
+     * @throws \BadMethodCallException when property is nullable
      * @return self
      */
     public function setDefaultValue($defaultValue)
     {
+        if ($this->nullable) {
+            throw new \BadMethodCallException('Cannot set default value of property since it\'s nullable');
+        }
         $this->defaultValue = $defaultValue;
         $this->hasDefaultValue = true;
         return $this;
@@ -56,10 +61,7 @@ class PropertyOutline
 
     private function setName($name)
     {
-        $name = trim($name);
-        if (!$name) {
-            throw new \InvalidArgumentException('Name of property cannot be blank');
-        }
+        Assertion::notBlank($name, 'Name of property cannot be empty');
         $this->name = $name;
         return $this;
     }
@@ -73,19 +75,24 @@ class PropertyOutline
     }
 
     /**
-     * Set info whether property is allowed to be null
+     * Set information whether property is allowed to be null
      *
      * @param boolean $nullable
+     * @throws \BadMethodCallException when property has default value
      * @return self
      */
     public function setIsNullable($nullable)
     {
-        $this->nullable = (bool)$nullable;
+        $nullable = (bool)$nullable;
+        if ($this->hasDefaultValue && $nullable) {
+            throw new \BadMethodCallException('Cannot set property to be nullable since it has default value');
+        }
+        $this->nullable = $nullable;
         return $this;
     }
 
     /**
-     * Returns info whether property is allowed to be null
+     * Returns information whether property is allowed to be null
      *
      * @return boolean
      */

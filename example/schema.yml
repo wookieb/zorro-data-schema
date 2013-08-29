@@ -1,0 +1,20 @@
+classes:
+  User:
+    properties:
+      name: string
+      lastname: string
+      address: Address
+      registrationDate: date
+      tags:
+        type: collection<string>
+        nullable: true
+
+  Address:
+      properties:
+        street: string
+        city: string
+
+  SuperUser:
+    extend: User
+    properties:
+      username: string

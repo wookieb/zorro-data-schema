@@ -23,27 +23,27 @@ class BasicSchemaOutline extends SchemaOutline
 {
     public function __construct()
     {
-        $this->addType(new ByteOutline());
-        $this->addType(new DateOutline());
-        $this->addType(new DoubleOutline());
-        $this->addType(new FloatOutline());
-        $this->addType(new StringOutline());
+        $this->addTypeOutline(new ByteOutline());
+        $this->addTypeOutline(new DateOutline());
+        $this->addTypeOutline(new DoubleOutline());
+        $this->addTypeOutline(new FloatOutline());
+        $this->addTypeOutline(new StringOutline());
 
-        $this->addType(new Integer16Outline());
-        $this->addType(new Integer32Outline('int16'));
+        $this->addTypeOutline(new Integer16Outline());
+        $this->addTypeOutline(new Integer16Outline('int16'));
 
-        $this->addType(new Integer32Outline());
-        $this->addType(new Integer32Outline('int32'));
+        $this->addTypeOutline(new Integer32Outline());
+        $this->addTypeOutline(new Integer32Outline('int32'));
 
-        $this->addType(new Integer64Outline());
-        $this->addType(new Integer64Outline('int64'));
+        $this->addTypeOutline(new Integer64Outline());
+        $this->addTypeOutline(new Integer64Outline('int64'));
 
-        $this->addType(new BooleanOutline());
-        $this->addType(new BooleanOutline('bool'));
+        $this->addTypeOutline(new BooleanOutline());
+        $this->addTypeOutline(new BooleanOutline('bool'));
 
-        $this->addType(new BinaryOutline());
-        $this->addType(new BinaryOutline('bin'));
+        $this->addTypeOutline(new BinaryOutline());
+        $this->addTypeOutline(new BinaryOutline('bin'));
 
-        $this->addDynamicType(new CollectionDynamicTypeOutline($this));
+        $this->addDynamicTypeOutline(new CollectionDynamicTypeOutline($this));
     }
 }

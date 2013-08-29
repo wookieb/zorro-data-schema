@@ -1,0 +1,30 @@
+import:
+  - second_implementation.yml
+
+global:
+  accessors:
+    style: camel-case
+    enabled: true
+
+  namespaces:
+    - Wookieb\ZorroDataSchema\Tests\Resources\Implementation\Entity
+    - Wookieb\ZorroDataSchema\Tests\Resources\Implementation\SecondEntity
+
+classes:
+  User:
+    accessors: disabled
+    properties:
+      name:
+        setter: setLogin
+      lastname:
+        as: surname
+      nickname:
+        getter: getNick
+
+  Admin:
+    class: Wookieb\ZorroDataSchema\Tests\Resources\Implementation\Admin
+    accessors:
+      style: underscore
+    properties:
+      masterOfDisaster:
+        as: yesHeIs

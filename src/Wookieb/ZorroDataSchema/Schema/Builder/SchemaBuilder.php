@@ -1,79 +1,159 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder;
-use Assert\Assertion;
-use Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeException;
-use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMap;
-use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMapInterface;
-use Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\ClassMapAwareInterface;
-use Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\SchemaBuilderAwareInterface;
-use Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\TypeBuilderInterface;
-use Wookieb\ZorroDataSchema\Schema\Schema;
+use Wookieb\ZorroDataSchema\Loader\ZorroLoaderInterface;
+use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Builder\ImplementationBuilder;
 use Wookieb\ZorroDataSchema\Schema\SchemaInterface;
-use Wookieb\ZorroDataSchema\SchemaOutline\SchemaOutlineInterface;
-use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface;
-use Wookieb\ZorroDataSchema\Type\TypeInterface;
+use Wookieb\ZorroDataSchema\SchemaOutline\Builder\SchemaOutlineBuilder;
+
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class SchemaBuilder
 {
-    private $schemaOutline;
-    /**
-     * @var SchemaInterface
-     */
-    private $schema;
-    private $typeBuilders = array();
 
+    private $implementationBuilder;
+    private $schemaOutlineBuilder;
+    private $schemaLinker;
 
-    public function __construct(SchemaOutlineInterface $schemaOutline)
+    public function __construct(ImplementationBuilder $implementationBuilder = null,
+                                SchemaOutlineBuilder $schemaOutlineBuilder = null,
+                                SchemaLinker $schemaLinker = null)
     {
-        $this->schemaOutline = $schemaOutline;
+        $this->implementationBuilder = $implementationBuilder ? : $this->createImplementationBuilder();
+        $this->schemaOutlineBuilder = $schemaOutlineBuilder ? : $this->createSchemaOutlineBuilder();
+        $this->schemaLinker = $schemaLinker ? : $this->createSchemaLinker();
     }
 
-    public function registerTypeBuilder(TypeBuilderInterface $typeBuilder, $priority = 0)
+    protected function createImplementationBuilder()
     {
-        if ($typeBuilder instanceof SchemaBuilderAwareInterface) {
-            $typeBuilder->setSchemaBuilder($this);
-        }
-        $this->typeBuilders[$priority][] = $typeBuilder;
-        krsort($this->typeBuilders);
+        return new ImplementationBuilder();
+    }
+
+    protected function createSchemaOutlineBuilder()
+    {
+        return new SchemaOutlineBuilder();
+    }
+
+    protected function createSchemaLinker()
+    {
+        return new BasicSchemaLinker();
+    }
+
+    /**
+     * @param ImplementationBuilder $implementationBuilder
+     * @return self
+     */
+    public function setImplementationBuilder(ImplementationBuilder $implementationBuilder)
+    {
+        $this->implementationBuilder = $implementationBuilder;
         return $this;
     }
 
     /**
-     * @param TypeOutlineInterface $typeOutline
-     * @throws UnableToGenerateTypeException
-     * @return TypeInterface
+     * @return ImplementationBuilder
      */
-    public function generateType(TypeOutlineInterface $typeOutline)
+    public function getImplementationBuilder()
     {
-        if ($this->schema->hasType($typeOutline->getName())) {
-            return $this->schema->getType($typeOutline->getName());
-        }
-
-        foreach ($this->typeBuilders as $builders) {
-            foreach ($builders as $builder) {
-                /* @var \Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders\TypeBuilderInterface $builder */
-                if ($builder->isAbleToGenerate($typeOutline)) {
-                    return $builder->generate($typeOutline);
-                }
-            }
-        }
-
-        $msg = 'There is no type builder able to handle "'.$typeOutline->getName().'" type outline';
-        throw new UnableToGenerateTypeException($msg, $typeOutline);
+        return $this->implementationBuilder;
     }
 
-    public function build(SchemaInterface $schema = null)
+    /**
+     * @param SchemaOutlineBuilder $schemaOutlineBuilder
+     * @return self
+     */
+    public function setSchemaOutlineBuilder(SchemaOutlineBuilder $schemaOutlineBuilder)
     {
-        $this->schema = $schema ? : new Schema();
-        foreach ($this->schemaOutline as $typeOutline) {
-            /* @var \Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface $typeOutline */
-            $type = $this->generateType($typeOutline);
-            $this->schema->registerType($typeOutline->getName(), $type);
-        }
-        return $this->schema;
+        $this->schemaOutlineBuilder = $schemaOutlineBuilder;
+        return $this;
     }
+
+    /**
+     * @return SchemaOutlineBuilder
+     */
+    public function getSchemaOutlineBuilder()
+    {
+        return $this->schemaOutlineBuilder;
+    }
+
+    /**
+     * @param SchemaLinker $schemaLinker
+     * @return self
+     */
+    public function setSchemaLinker(SchemaLinker $schemaLinker)
+    {
+        $this->schemaLinker = $schemaLinker;
+        return $this;
+    }
+
+    /**
+     * @return BasicSchemaLinker
+     */
+    public function getSchemaLinker()
+    {
+        return $this->schemaLinker;
+    }
+
+    /**
+     * @param ZorroLoaderInterface $loader
+     * @return self
+     */
+    public function registerLoader(ZorroLoaderInterface $loader)
+    {
+        $this->schemaOutlineBuilder->registerLoader(clone $loader);
+        $this->implementationBuilder->registerLoader(clone $loader);
+        return $this;
+    }
+
+    /**
+     * Loads schema implementation definition resource
+     *
+     * @param string $resource
+     * @return string
+     */
+    public function loadImplementation($resource)
+    {
+        $this->implementationBuilder->load($resource);
+        return $this;
+    }
+
+    /**
+     * Loads schema outline definition resource
+     *
+     * @param string $resource
+     * @return self
+     */
+    public function loadSchema($resource)
+    {
+        $this->schemaOutlineBuilder->load($resource);
+        return $this;
+    }
+
+    /**
+     * Builds schema
+     *
+     * @param SchemaInterface $baseSchema
+     * @return SchemaInterface
+     */
+    public function build(SchemaInterface $baseSchema = null)
+    {
+        $outline = $this->schemaOutlineBuilder->build();
+        $implementation = $this->implementationBuilder->build();
+        return $this->schemaLinker->build($outline, $implementation, $baseSchema);
+    }
+
+    /**
+     * Returns list of resources used to create schema
+     *
+     * @return array
+     */
+    public function getResources()
+    {
+        return array_merge(
+            $this->implementationBuilder->getResources(),
+            $this->schemaOutlineBuilder->getResources()
+        );
+    }
+
 }

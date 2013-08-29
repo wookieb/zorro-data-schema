@@ -21,11 +21,7 @@ abstract class AbstractTypeOutline implements TypeOutlineInterface
      */
     public function __construct($name = null)
     {
-        if ($this->defaultName === null) {
-            Assertion::notBlank($name);
-        } else {
-            Assertion::nullOrnotBlank($name);
-        }
+        Assertion::nullOrNotBlank($name, 'Name of type outline cannot be empty');
         $this->name = $name ? : $this->defaultName;
     }
 

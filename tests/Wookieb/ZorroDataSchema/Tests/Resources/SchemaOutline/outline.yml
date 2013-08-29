@@ -1,0 +1,12 @@
+import:
+  - second_outline.yml
+
+classes:
+  # hoisting test
+  Admin:
+    extend: SuperUser
+
+  SuperUser:
+    extend: User
+    properties:
+      position: string

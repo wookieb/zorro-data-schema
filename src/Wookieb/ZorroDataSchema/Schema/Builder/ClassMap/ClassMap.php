@@ -1,10 +1,14 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder\ClassMap;
-use Wookieb\ZorroDataSchema\Exception\NoClassForSuchTypeException;
+use Wookieb\ZorroDataSchema\Exception\ClassNotFoundException;
 
 
 /**
+ * Standard class map implementation
+ * Attempts to search classes in registered namespaces basing on type name where type name becomes a class name.
+ * Additionally dot (".") characters in type name are replaced by namespace separator ("\").
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class ClassMap implements ClassMapInterface
@@ -13,10 +17,7 @@ class ClassMap implements ClassMapInterface
     private $namespaces = array();
 
     /**
-     * Register namespace where to looking for class names with same name as type name
-     *
-     * @param string $namespace
-     * @return self
+     * {@inheritDoc}
      */
     public function registerNamespace($namespace)
     {
@@ -24,7 +25,7 @@ class ClassMap implements ClassMapInterface
         return $this;
     }
 
-    private function searchClassInNamespaces($typeName)
+    protected function searchClassInNamespaces($typeName)
     {
         $typeName = str_replace('.', '\\', $typeName);
         foreach ($this->namespaces as $namespace) {
@@ -47,7 +48,7 @@ class ClassMap implements ClassMapInterface
         if ($foundClass) {
             return $foundClass;
         }
-        throw new NoClassForSuchTypeException('No class name defined for object of type "'.$typeName.'"');
+        throw new ClassNotFoundException('No class name defined for type "'.$typeName.'"');
     }
 
     /**

@@ -1,0 +1,17 @@
+classes:
+  User:
+    class: \User
+    accessors:
+      style: camel-case
+    properties:
+      name:
+        setter: setMyName
+        getter: getMyName
+      address:
+        accessors: disabled
+
+  Address:
+    class: \Address
+
+  SuperUser:
+    class: \SuperUser

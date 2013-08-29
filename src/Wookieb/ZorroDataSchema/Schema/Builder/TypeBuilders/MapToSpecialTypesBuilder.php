@@ -3,20 +3,17 @@
 namespace Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders;
 use Assert\Assertion;
 use Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeException;
+use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\ImplementationInterface;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface;
 
 /**
+ * Special builder to map some type name to specialized "type" objects
+ *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
 class MapToSpecialTypesBuilder implements TypeBuilderInterface
 {
     private $map = array();
-
-
-    public function __construct()
-    {
-        $this->mapToSpecialType('Exception', 'Wookieb\ZorroDataSchema\Type\ExceptionType');
-    }
 
     public function mapToSpecialType($typeOutlineName, $targetTypeClass)
     {
@@ -30,7 +27,7 @@ class MapToSpecialTypesBuilder implements TypeBuilderInterface
         return isset($this->map[$typeOutline->getName()]);
     }
 
-    public function generate(TypeOutlineInterface $typeOutline, $implementation = 'php')
+    public function generate(TypeOutlineInterface $typeOutline, ImplementationInterface $implementation)
     {
         if (!$this->isAbleToGenerate($typeOutline)) {
             $msg = 'There is no mapped type class for type "'.$typeOutline->getName().'"';

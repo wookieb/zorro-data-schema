@@ -29,7 +29,7 @@ class CamelCaseStyleTest extends \PHPUnit_Framework_TestCase
     public function setterNameWithPrefixProvider()
     {
         return array(
-            'undescore style' => array('some_property', 'setSomeProperty'),
+            'underscore style' => array('some_property', 'setSomeProperty'),
             'camel case' => array('someProperty', 'setSomeProperty'),
             'pascal case' => array('Property', 'setProperty')
         );
@@ -47,7 +47,7 @@ class CamelCaseStyleTest extends \PHPUnit_Framework_TestCase
     public function setterNameWithoutPrefixProvider()
     {
         return array(
-            'undescore style' => array('some_property', 'someProperty'),
+            'underscore style' => array('some_property', 'someProperty'),
             'camel case' => array('someProperty', 'someProperty'),
             'pascal case' => array('Property', 'property')
         );
@@ -64,7 +64,7 @@ class CamelCaseStyleTest extends \PHPUnit_Framework_TestCase
     public function getterNameWithPrefixProvider()
     {
         return array(
-            'undescore style' => array('some_property', 'getSomeProperty'),
+            'underscore style' => array('some_property', 'getSomeProperty'),
             'camel case' => array('someProperty', 'getSomeProperty'),
             'pascal case' => array('Property', 'getProperty')
         );
@@ -82,7 +82,7 @@ class CamelCaseStyleTest extends \PHPUnit_Framework_TestCase
     public function getterNameWithoutPrefixProvider()
     {
         return array(
-            'undescore style' => array('some_property', 'someProperty'),
+            'underscore style' => array('some_property', 'someProperty'),
             'camel case' => array('someProperty', 'someProperty'),
             'pascal case' => array('Property', 'property')
         );
