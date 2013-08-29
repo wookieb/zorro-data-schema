@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 use Wookieb\ZorroDataSchema\Exception\TypeNotFoundException;
 use Wookieb\ZorroDataSchema\Schema\Type\TypeInterface;
 
@@ -39,7 +39,7 @@ class Schema implements SchemaInterface
      */
     public function registerType($name, TypeInterface $type)
     {
-        Assertion::notBlank($name, 'Name of registered type cannot be empty');
+        Assert::notBlank($name, 'Name of registered type cannot be empty');
         $this->types[$name] = $type;
         return $this;
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 use Wookieb\ZorroDataSchema\Exception\InvalidTypeException;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
@@ -22,7 +22,7 @@ class EnumType implements TypeInterface
      */
     public function __construct($name, array $options)
     {
-        Assertion::notBlank($name, 'Name of enum cannot be empty');
+        Assert::notBlank($name, 'Name of enum cannot be empty');
         $this->name = $name;
 
         foreach ($options as $optionName => $optionValue) {
@@ -43,7 +43,7 @@ class EnumType implements TypeInterface
      */
     public function addOption($name, $value)
     {
-        Assertion::notBlank($name, 'Option name cannot be empty');
+        Assert::notBlank($name, 'Option name cannot be empty');
         $value = (int)$value;
         $this->options[$name] = $value;
         return $this;

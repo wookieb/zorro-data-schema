@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 
 /**
@@ -20,7 +20,7 @@ class Styles
      */
     public function registerStyle($name, StyleInterface $style)
     {
-        Assertion::notBlank($name, 'Name of style cannot be empty');
+        Assert::notBlank($name, 'Name of style cannot be empty');
         $this->styles[$name] = $style;
         return $this;
     }

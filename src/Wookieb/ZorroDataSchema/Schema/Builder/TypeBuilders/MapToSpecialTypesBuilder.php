@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder\TypeBuilders;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 use Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeException;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\ImplementationInterface;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface;
@@ -17,7 +17,7 @@ class MapToSpecialTypesBuilder implements TypeBuilderInterface
 
     public function mapToSpecialType($typeOutlineName, $targetTypeClass)
     {
-        Assertion::notBlank($typeOutlineName, 'Type outline name to map cannot be empty');
+        Assert::notBlank($typeOutlineName, 'Type outline name to map cannot be empty');
         $this->map[$typeOutlineName] = $targetTypeClass;
         return $this;
     }

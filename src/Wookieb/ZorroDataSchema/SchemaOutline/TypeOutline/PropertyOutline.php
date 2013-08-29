@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 /**
  * Outline of class property
@@ -61,7 +61,7 @@ class PropertyOutline
 
     private function setName($name)
     {
-        Assertion::notBlank($name, 'Name of property cannot be empty');
+        Assert::notBlank($name, 'Name of property cannot be empty');
         $this->name = $name;
         return $this;
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
@@ -21,7 +21,7 @@ abstract class AbstractTypeOutline implements TypeOutlineInterface
      */
     public function __construct($name = null)
     {
-        Assertion::nullOrNotBlank($name, 'Name of type outline cannot be empty');
+        Assert::nullOrNotBlank($name, 'Name of type outline cannot be empty');
         $this->name = $name ? : $this->defaultName;
     }
 

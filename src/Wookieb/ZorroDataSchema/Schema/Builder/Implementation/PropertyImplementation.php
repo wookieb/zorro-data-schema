@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder\Implementation;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 
 /**
@@ -22,7 +22,7 @@ class PropertyImplementation
      */
     public function __construct($propertyName)
     {
-        Assertion::notBlank($propertyName, 'Property name cannot be empty');
+        Assert::notBlank($propertyName, 'Property name cannot be empty');
         $this->name = $propertyName;
     }
 
@@ -76,7 +76,7 @@ class PropertyImplementation
      */
     public function setSetter($setter = null)
     {
-        Assertion::nullOrNotBlank($setter, 'Setter name cannot be empty');
+        Assert::nullOrNotBlank($setter, 'Setter name cannot be empty');
         $this->setter = $setter;
         return $this;
     }
@@ -94,7 +94,7 @@ class PropertyImplementation
      */
     public function setTargetPropertyName($targetPropertyName = null)
     {
-        Assertion::nullOrNotBlank($targetPropertyName, 'Target property name cannot be empty');
+        Assert::nullOrNotBlank($targetPropertyName, 'Target property name cannot be empty');
         $this->targetPropertyName = $targetPropertyName;
         return $this;
     }
@@ -110,7 +110,7 @@ class PropertyImplementation
      */
     public function setGetter($getter = null)
     {
-        Assertion::nullOrNotBlank($getter, 'Getter name cannot be empty');
+        Assert::nullOrNotBlank($getter, 'Getter name cannot be empty');
         $this->getter = $getter;
         return $this;
     }

@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 
 /**
@@ -30,7 +30,7 @@ class EnumOutline extends AbstractTypeOutline
 
     private function addOption($name, $value)
     {
-        Assertion::notBlank($name, 'Option name cannot be empty');
+        Assert::notBlank($name, 'Option name cannot be empty');
         $value = (int)$value;
         $this->options[$name] = $value;
         return $this;

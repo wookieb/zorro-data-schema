@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 
 /**
@@ -24,7 +24,7 @@ abstract class AbstractClassType implements TypeInterface
      */
     public function __construct($name)
     {
-        Assertion::notBlank($name, 'Name of class type cannot be empty');
+        Assert::notBlank($name, 'Name of class type cannot be empty');
         $this->name = $name;
 
         $this->init();

@@ -12,7 +12,7 @@ Schema is a simple structure that describes list of properties and their types.
 Each property may have a default value which is used when value for that property will be null.
 If it's ok to property to be null then mark it as "nullable" (see below) otherwise null will be converted to specified type.
 
-Currently the only way to define schema in easy way is to use YAML files.
+Currently to define schema in easy way is to use YAML files.
 Each section (import, enum, classes) in schema is optional.
 
 ```yaml

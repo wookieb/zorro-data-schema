@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Builder\Implementation;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 
 
 /**
@@ -15,7 +15,7 @@ class ClassTypeImplementation extends GlobalClassTypeImplementation
 
     public function __construct($name)
     {
-        Assertion::notBlank($name, 'Class type implementation name cannot be empty');
+        Assert::notBlank($name, 'Class type implementation name cannot be empty');
         $this->name = $name;
     }
 
@@ -26,7 +26,7 @@ class ClassTypeImplementation extends GlobalClassTypeImplementation
 
     public function setClassName($className)
     {
-        Assertion::nullOrnotBlank($className, 'Class name cannot be empty');
+        Assert::nullOrnotBlank($className, 'Class name cannot be empty');
         $this->className = $className;
         return $this;
     }

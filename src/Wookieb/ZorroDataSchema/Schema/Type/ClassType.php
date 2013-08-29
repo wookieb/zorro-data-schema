@@ -1,7 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
-use Assert\Assertion;
+use Wookieb\Assert\Assert;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 
@@ -196,7 +196,7 @@ class ClassType extends AbstractClassType
 
     private function setClass($class)
     {
-        Assertion::notBlank($class, 'Class name cannot be empty');
+        Assert::notBlank($class, 'Class name cannot be empty');
         $this->reflection = null;
         $this->class = $class;
         return $this;
