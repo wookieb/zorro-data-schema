@@ -1,5 +1,5 @@
 <?php
-require_once '../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\Config\FileLocator;
 use Wookieb\ZorroDataSchema\Loader\YamlLoader;
@@ -9,47 +9,55 @@ use Wookieb\ZorroDataSchema\Schema\SchemaCache;
 class User
 {
     private $name;
-    private $lastname;
-    private $address;
-
-    public function setMyName($name)
-    {
-        $this->name = 'My name is '.$name;
-    }
-
-    public function getMyName()
-    {
-        return substr($this->name, 0, 11);
-    }
-
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
-    }
+    private $registrationDate;
+    private $status;
+    private $addresses;
 }
 
 class Address
 {
     private $street;
     private $city;
+
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param mixed $street
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
 }
 
-class SuperUser extends User
-{
-    private $username;
-}
 
-
-$cache = new SchemaCache('cache/schema');
+$cache = new SchemaCache(__DIR__.'/cache/schema');
 if (!$cache->isFresh()) {
-    $locator = new FileLocator(array('.'));
+    $locator = new FileLocator(array(__DIR__));
 
-    $builder = new \Wookieb\ZorroDataSchema\Schema\Builder\SchemaBuilder();
+    $builder = new SchemaBuilder();
     $builder->registerLoader(new YamlLoader($locator));
 
     $builder->loadSchema('schema.yml');
@@ -64,12 +72,12 @@ if (!$cache->isFresh()) {
 
 $data = array(
     'name' => 'Łukasz',
-    'lastname' => 'Kużyński',
-    'address' => array(
-        'street' => 'Sportowa',
-        'city' => 'Gdynia'
-    ),
-    'registrationDate' => 1123818123
+    'registrationDate' => 1123818123,
+    'status' => 'ACTIVE',
+    'addresses' => array(
+        array('street' => 'Sportowa', 'city' => 'Gdynia'),
+        array('street' => 'Zamkowa', 'city' => 'Gdańsk')
+    )
 );
 
 echo 'Raw data'.PHP_EOL;

@@ -1,6 +1,6 @@
 {
     "name": "wookieb/zorro-data-schema",
-    "description": "Library to extract data from objects and create objects from raw data based on schema",
+    "description": "Tool to convert objects to arrays and vice versa according to data schema",
     "license": "MIT",
     "authors": [
         {

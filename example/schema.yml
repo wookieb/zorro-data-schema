@@ -1,20 +1,22 @@
+enums:
+  UserStatus:
+    INACTIVE: 0
+    ACTIVE: 1
+    REMOVED: 2
+
 classes:
   User:
     properties:
       name: string
-      lastname: string
-      address: Address
-      registrationDate: date
-      tags:
-        type: collection<string>
+      registrationDate:
+        type: date
         nullable: true
+      status:
+        type: UserStatus
+        default: INACTIVE
+      addresses: collection<Address>
 
   Address:
       properties:
         street: string
         city: string
-
-  SuperUser:
-    extend: User
-    properties:
-      username: string

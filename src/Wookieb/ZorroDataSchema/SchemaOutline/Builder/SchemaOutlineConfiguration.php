@@ -61,7 +61,6 @@ class SchemaOutlineConfiguration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->prototype('integer')
-                            ->cannotBeEmpty()
                         ->end()
                     ->end()
                 ->end()
