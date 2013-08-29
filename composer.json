@@ -2,6 +2,7 @@
     "name": "wookieb/zorro-data-schema",
     "description": "Tool to convert objects to arrays and vice versa according to data schema",
     "license": "MIT",
+    "keywords": ["serialization", "deserialization", "data schema", "schema"],
     "authors": [
         {
             "name": "Łukasz Kużyński 'wookieb'",
