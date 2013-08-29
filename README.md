@@ -1,16 +1,14 @@
-Zorro Data Schema
-=================
+# Zorro Data Schema
+
 [![Build Status](https://travis-ci.org/wookieb/zorro-data-schema.png?branch=master)](https://travis-ci.org/wookieb/zorro-data-schema)
 Tool to convert objects to arrays and vice versa according to data schema
 
-Use cases
-=========
+## Use cases
 * Retrieving and sending data to many environments
 * REST API
 * Serialization layer for json and other formats
 
-Example
-=======
+## Example
 
 Just run
 ```
@@ -98,16 +96,12 @@ Array
 )
 ```
 
-Documentation
-=============
-[see documentation](docs)
+## Documentation
+[see documentation](docs/getting_started.md)
 
-Status
-======
+## Status
 The API is experimental. Not tested on production yet.
 
-
-TODO
-====
+## TODO
 * generator of classes
 * "map" type

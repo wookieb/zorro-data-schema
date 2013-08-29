@@ -80,6 +80,13 @@ $data = array(
     )
 );
 
+$type = $schema->getType('User');
+$start = microtime(true);
+for ($i=0; $i<1000; $i++) {
+    $type->create($data);
+}
+echo microtime(true) - $start;
+die();
 echo 'Raw data'.PHP_EOL;
 print_r($data);
 echo PHP_EOL.'Transformed to "User" type:'.PHP_EOL;
