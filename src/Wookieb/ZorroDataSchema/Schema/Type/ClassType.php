@@ -58,6 +58,9 @@ class ClassType extends AbstractClassType
         }
 
         try {
+            if (version_compare('5.4', PHP_VERSION, '<')) {
+                throw new \ReflectionException('Come on php!');
+            }
             $object = $this->getReflection()->newInstanceWithoutConstructor();
         } catch (\ReflectionException $e) {
             $object = $this->fuckThisShit($this->class);
