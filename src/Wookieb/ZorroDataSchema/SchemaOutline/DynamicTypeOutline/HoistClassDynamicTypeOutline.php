@@ -19,6 +19,8 @@ class HoistClassDynamicTypeOutline implements DynamicTypeOutlineInterface
      */
     private $schemaOutline;
 
+    private $loadedClasses = array();
+
     /**
      * @param SchemaOutlineInterface $schemaOutline reference to current outline of schema
      */
@@ -53,6 +55,11 @@ class HoistClassDynamicTypeOutline implements DynamicTypeOutlineInterface
         if (!$this->isAbleToGenerate($name)) {
             throw new UnableToGenerateTypeOutlineException('Class type "'.$name.'" does not exist');
         }
+
+        if (isset($this->loadedClasses[$name])) {
+            return $this->loadedClasses[$name];
+        }
+
         $classMeta = $this->classesConfig[$name];
         $parentClass = null;
         if (isset($classMeta['extend'])) {
@@ -62,7 +69,10 @@ class HoistClassDynamicTypeOutline implements DynamicTypeOutlineInterface
                 throw new UnableToGenerateTypeOutlineException($msg);
             }
         }
+
         $classOutline = new ClassOutline($name, array(), $parentClass);
+        $this->loadedClasses[$name] = $classOutline;
+
         if (isset($classMeta['properties'])) {
             foreach ($classMeta['properties'] as $propertyName => $property) {
                 $propertyOutline = new PropertyOutline($propertyName, $this->schemaOutline->getTypeOutline($property['type']));
@@ -78,6 +88,7 @@ class HoistClassDynamicTypeOutline implements DynamicTypeOutlineInterface
                 $classOutline->addProperty($propertyOutline);
             }
         }
+        unset($this->loadedClasses[$name]);
         return $classOutline;
     }
 }

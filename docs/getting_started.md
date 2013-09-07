@@ -54,20 +54,88 @@ classes:
 
 List of available types and their representation in PHP
 
-| type name        | representation in php          |
-| ---------------- | ------------------------------ |
-| byte             | integer (max value 127)        |
-| binary           | string                         |
-| bool, boolean    | boolean                        |
-| collection<type> | array of elements of type      |
-| date             | DateTime                       |
-| double           | float                          |
-| enum             | string, integer                |
-| int16, integer16 | integer (max value 32767)      |
-| int32, integer32 | integer (max value 2147483647) |
-| int64, integer64 | integer (no max value)         |
-| string           | string                         |
+| type name                      | representation in php          |
+| ------------------------------ | ------------------------------ |
+| byte                           | integer (max value 127)        |
+| binary                         | string                         |
+| bool, boolean                  | boolean                        |
+| collection<type>               | array of elements of type      |
+| date                           | DateTime                       |
+| double                         | float                          |
+| enum                           | string, integer                |
+| int16, integer16, short        | integer (max value 32767)      |
+| int32, integer32, int, integer | integer (max value 2147483647) |
+| int64, integer64, long         | integer (no max value)         |
+| string                         | string                         |
 
+### Choice type
+
+Choice type allows you to define one more type for properties.
+
+Let's assume your User type contains "age" property which could be string or int
+
+```yml
+classes:
+    User:
+        properties:
+            age: string | int16
+
+```
+
+```php
+
+class User
+{
+    private $age;
+
+    public function __construct($age)
+    {
+        if (!is_string($age) && !is_int($age)) {
+
+            throw new \InvalidArgumentException('Invalid "age" type. Only string or int allowed');
+        }
+        $this->age = $age;
+    }
+}
+
+$user = new User(15);
+$class = $schema->getType('User');
+
+$data = $class->extract($user);
+print_r($data);
+// Array
+// (
+//    [age] => Array
+//        (
+//            [__type] => int16
+//            [data] => 15
+//        )
+// )
+
+$newUser = $class->create($data);
+var_dump($newUser);
+// class User#10 (1) {
+//   private $age =>
+//   int(15)
+// }
+
+// force ZDS to use string type for "age" property
+$data['age']['__type'] = 'string';
+$newUser = $class->create($data);
+var_dump($newUser);
+
+// class User#11 (1) {
+//   private $age =>
+//   string(2) "15"
+// }
+
+```
+As you see ZDS uses special structure of array to expose target type of property:
+* key "__type" contains name of target type.
+* key "data" contains extracted data
+
+Unfortunately choice type obscures the global representation of data using above structure.
+You need to keep in mind to not overuse "choice" if you need to keep global representation of data clean and easy to read.
 
 <a name="creating-implementation-details"/>
 ## Creating implementation details

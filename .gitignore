@@ -4,3 +4,4 @@ TODO
 composer.lock
 examples/cache/
 .DS_Store
+test.php

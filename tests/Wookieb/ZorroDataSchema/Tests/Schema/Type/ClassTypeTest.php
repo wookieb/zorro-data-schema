@@ -230,4 +230,39 @@ class ClassTypeTest extends ZorroUnit
             throw $e;
         }
     }
+
+    public function isSubclassOfProvider()
+    {
+        $c = 'someClass';
+        return array(
+            'class without parent' => array(
+                new ClassType('User', $c),
+                false
+            ),
+            'class with parent and not matching name' => array(
+                new ClassType('Mom', $c, new ClassType('Admin', $c)),
+                false
+            ),
+            'class with parent and matching name' => array(
+                new ClassType('Mom', $c, new ClassType('User', $c)),
+                true
+            ),
+            'class with parent and not matching name, but that parent has a parent with matching name' => array(
+                new ClassType('Admin', $c, new ClassType('Admin2', $c, new ClassType('User', $c))),
+                true
+            ),
+            'class with parent and not matching name, but that parent has a parent with not matching name' => array(
+                new ClassType('Admin', $c, new ClassType('Admin2', $c, new ClassType('SuperAdmin', $c))),
+                false
+            )
+        );
+    }
+
+    /**
+     * @dataProvider isSubclassOfProvider
+     */
+    public function testIsSubclassOf(ClassType $classType, $result)
+    {
+        $this->assertSame($result, $classType->isSubclassOf('User'));
+    }
 }

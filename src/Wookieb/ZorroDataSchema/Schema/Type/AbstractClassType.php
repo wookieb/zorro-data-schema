@@ -49,6 +49,14 @@ abstract class AbstractClassType implements TypeInterface
     }
 
     /**
+     * Checks whether current class type is a subclass of class type with given name
+     *
+     * @param string $name
+     * @return boolean
+     */
+    abstract public function isSubclassOf($name);
+
+    /**
      * Set values of properties for given object
      *
      * @param object $object

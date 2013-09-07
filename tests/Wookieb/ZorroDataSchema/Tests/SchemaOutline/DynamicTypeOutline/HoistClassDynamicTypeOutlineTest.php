@@ -108,4 +108,37 @@ class HoistClassDynamicTypeOutlineTest extends ZorroUnit
         $this->setExpectedException('Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeOutlineException', $msg);
         $this->object->generate('partner');
     }
+
+    public function testProperHandlingOfCircularReferences()
+    {
+        $this->object->setClassesConfig(array(
+            'User' => array(
+                'properties' => array(
+                    'admin' => array(
+                        'type' => 'Admin'
+                    )
+                )
+            ),
+            'Admin' => array(
+                'properties' => array(
+                    'user' => array(
+                        'type' => 'User'
+                    )
+                )
+            )
+        ));
+
+        $result = $this->object->generate('User');
+        $this->assertInstanceOf('Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\ClassOutline', $result);
+
+
+        /** @var ClassOutline $result */
+        $properties = $result->getProperties();
+        $admin = $properties['admin'];
+
+        $properties = $admin->getType()->getProperties();
+        $user = $properties['user'];
+
+        $this->assertSame($result, $user->getType());
+    }
 }

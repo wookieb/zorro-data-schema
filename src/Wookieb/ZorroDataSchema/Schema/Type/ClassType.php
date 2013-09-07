@@ -219,4 +219,12 @@ class ClassType extends AbstractClassType
     {
         return $value instanceof $this->class;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isSubclassOf($name)
+    {
+        return $this->parentType && ($this->parentType->getName() === $name || $this->parentType->isSubclassOf($name));
+    }
 }

@@ -24,6 +24,8 @@ class ClassTypeBuilder implements TypeBuilderInterface, SchemaLinkerAwareInterfa
      */
     private $schemaLinker;
 
+    private $loadedClasses = array();
+
     public function setSchemaLinker(SchemaLinker $linker)
     {
         $this->schemaLinker = $linker;
@@ -59,15 +61,23 @@ class ClassTypeBuilder implements TypeBuilderInterface, SchemaLinkerAwareInterfa
         try {
             $classOptions = $implementation->getClassTypeImplementation($typeOutline->getName());
 
+            $typeName = $typeOutline->getName();
+            if (isset($this->loadedClasses[$typeName])) {
+                return $this->loadedClasses[$typeName];
+            }
+
             $classType = new ClassType(
                 $typeOutline->getName(),
                 $classOptions->getClassName(),
                 $parentType
             );
+            $this->loadedClasses[$typeName] = $classType;
 
             foreach ($typeOutline->getProperties() as $property) {
+                /* @var PropertyOutline $property */
                 $classType->addProperty($this->createPropertyDefinition($property, $classOptions, $implementation));
             }
+            unset($this->loadedClasses[$typeName]);
             return $classType;
         } catch (ClassNotFoundException $e) {
             $msg = 'Cannot find class name for "'.$typeOutline->getName().'" type outline';

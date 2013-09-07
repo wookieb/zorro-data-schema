@@ -189,7 +189,8 @@ class ClassTypeBuilderTest extends ZorroUnit
         $this->object->generate(new BooleanOutline(), $this->implementation);
     }
 
-    public function testExceptionWhenParentClassOutlineWillBeTransformedToTypeThatIsNotInstanceOfAbstractClassType() {
+    public function testExceptionWhenParentClassOutlineWillBeTransformedToTypeThatIsNotInstanceOfAbstractClassType()
+    {
         $msg = 'Parent type of class type must by an instance of class type';
         $this->setExpectedException('Wookieb\ZorroDataSchema\Exception\UnableToGenerateTypeException', $msg);
 
@@ -199,5 +200,26 @@ class ClassTypeBuilderTest extends ZorroUnit
         $this->schema->registerType('vacuumBadger', new BooleanType());
 
         $this->object->generate($outline, $this->implementation);
+    }
+
+    public function testProperHandlingOfCircularReferences()
+    {
+        $user = new ClassOutline('User');
+        $admin = new ClassOutline('Admin');
+
+        $user->addProperty(new PropertyOutline('admin', $admin));
+        $admin->addProperty(new PropertyOutline('user', $user));
+
+        $this->classMap->registerClass('User', 'User')
+            ->registerClass('Admin', 'Admin');
+
+        $userType = $this->object->generate($user, $this->implementation);
+
+        $properties = $userType->getProperties();
+        $adminType = $properties['admin']->getType();
+
+        $properties = $adminType->getProperties();
+
+        $this->assertSame($userType, $properties['user']->getType());
     }
 }

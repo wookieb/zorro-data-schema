@@ -63,4 +63,15 @@ class ClassOutline extends AbstractTypeOutline
     {
         return $this->parentClass;
     }
+
+    /**
+     * Checks whether current class outline is a subclass of class outline with given name
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function isSubclassOf($name)
+    {
+        return $this->parentClass && ($this->parentClass->getName() === $name || $this->parentClass->isSubclassOf($name));
+    }
 }
