@@ -67,6 +67,7 @@ List of available types and their representation in PHP
 | int32, integer32, int, integer | integer (max value 2147483647) |
 | int64, integer64, long         | integer (no max value)         |
 | string                         | string                         |
+| Exception (predefined class)   | Exception                      |
 
 ### Choice type
 
