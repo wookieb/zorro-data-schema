@@ -26,13 +26,16 @@ class PropertyDefinition
     /**
      * @param string $name
      * @param TypeInterface $type
+     * @param boolean $nullable
+     *
      * @throws \InvalidArgumentException when name is invalid
      */
-    public function __construct($name, TypeInterface $type)
+    public function __construct($name, TypeInterface $type, $nullable = false)
     {
         $this->setName($name);
         $this->setTargetPropertyName($name);
         $this->setType($type);
+        $this->setIsNullable($nullable);
     }
 
     private function setName($name)

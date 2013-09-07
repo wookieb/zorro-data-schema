@@ -137,7 +137,11 @@ class ClassType extends AbstractClassType
             }
             try {
                 /* @var PropertyDefinition $type */
-                $data[$propertyName] = $this->extractProperty($object, $property);
+                $value = $this->extractProperty($object, $property);
+                // including null in response is unnecessary
+                if ($value !== null) {
+                    $data[$propertyName] = $value;
+                }
                 $skipProperties[] = $propertyName;
             } catch (InvalidValueException $e) {
                 throw new InvalidValueException('Cannot extract value of property "'.$propertyName.'"', null, $e);

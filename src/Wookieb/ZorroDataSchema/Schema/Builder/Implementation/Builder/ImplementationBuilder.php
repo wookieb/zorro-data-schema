@@ -9,9 +9,9 @@ use Wookieb\ZorroDataSchema\Exception\ImplementationLoadingException;
 use Wookieb\ZorroDataSchema\Loader\LoadingContext;
 use Wookieb\ZorroDataSchema\Loader\ZorroLoaderInterface;
 use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMap;
+use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\BasicImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\ClassTypeImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\GlobalClassTypeImplementation;
-use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Implementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\ImplementationInterface;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\PropertyImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style\StandardStyles;
@@ -46,7 +46,7 @@ class ImplementationBuilder
 
     private function createStandardImplementation()
     {
-        return new Implementation(new ClassMap(), new GlobalClassTypeImplementation());
+        return new BasicImplementation(new ClassMap(), new GlobalClassTypeImplementation());
     }
 
     public function registerLoader(ZorroLoaderInterface $loader)

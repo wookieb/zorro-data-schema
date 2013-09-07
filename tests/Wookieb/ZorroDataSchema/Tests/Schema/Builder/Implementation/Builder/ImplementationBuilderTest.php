@@ -6,10 +6,10 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Resource\FileResource;
 use Wookieb\ZorroDataSchema\Loader\YamlLoader;
 use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMap;
+use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\BasicImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Builder\ImplementationBuilder;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\ClassTypeImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\GlobalClassTypeImplementation;
-use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Implementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\PropertyImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style\CamelCaseStyle;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style\UnderscoreStyle;
@@ -60,7 +60,7 @@ class ImplementationBuilderTest extends ZorroUnit
         $globalOptions = new GlobalClassTypeImplementation();
         $globalOptions->setAccessorsStyle(new CamelCaseStyle())
             ->setAccessorsEnabled(true);
-        $implementation = new Implementation($classMap, $globalOptions);
+        $implementation = new BasicImplementation($classMap, $globalOptions);
         $implementation
             ->registerClassTypeImplementation(
                 $this->classImplementation('User')

@@ -100,6 +100,11 @@ class ClassTypeBuilder implements TypeBuilderInterface, SchemaLinkerAwareInterfa
         $propertyDefinition = new PropertyDefinition($property->getName(), $propertyType);
         $propertyImplementation = $classOptions->getImplementationForProperty($property->getName());
 
+        $targetPropertyName = $propertyImplementation->getTargetPropertyName();
+        if ($targetPropertyName) {
+            $propertyDefinition->setTargetPropertyName($targetPropertyName);
+        }
+
         // nullable
         $propertyDefinition->setIsNullable($property->isNullable());
 
@@ -118,6 +123,7 @@ class ClassTypeBuilder implements TypeBuilderInterface, SchemaLinkerAwareInterfa
         if ($getter) {
             $propertyDefinition->setGetterName($getter);
         }
+
         return $propertyDefinition;
     }
 }

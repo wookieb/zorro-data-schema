@@ -2,6 +2,7 @@
 TODO
 /vendor/
 composer.lock
-examples/cache/
+examples/cache/*
+examples/cache
 .DS_Store
 test.php

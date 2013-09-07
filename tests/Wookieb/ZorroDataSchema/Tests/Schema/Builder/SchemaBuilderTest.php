@@ -66,6 +66,7 @@ class SchemaBuilderTest extends ZorroUnit
         foreach (new BasicSchema() as $name => $type) {
             $expected->registerType($name, $type);
         }
+        $this->registerPredefinedClassTypes($expected);
         $this->assertEquals($expected, $this->object->build());
 
         $expectedResources = array(
@@ -73,6 +74,17 @@ class SchemaBuilderTest extends ZorroUnit
             new FileResource(TESTS_DIRECTORY.'/Resources/Schema/schema.yml')
         );
         $this->assertEquals($expectedResources, $this->object->getResources());
+    }
+
+    private function registerPredefinedClassTypes(SchemaInterface $expectedSchema)
+    {
+        $classType = new ClassType('Exception', '\Exception');
+        $classType->addProperty(new PropertyDefinition('message', new StringType()));
+        $cause = new PropertyDefinition('cause', $classType, true);
+        $cause->setTargetPropertyName('previous');
+        $classType->addProperty($cause);
+
+        $expectedSchema->registerType('Exception', $classType);
     }
 
     public function testBuildWithProvidedSchema()

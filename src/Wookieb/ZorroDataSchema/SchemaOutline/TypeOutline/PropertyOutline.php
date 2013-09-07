@@ -19,13 +19,15 @@ class PropertyOutline
     /**
      * @param string $name name of property
      * @param TypeOutlineInterface $type
+     * @param boolean $nullable
      *
      * @throws \InvalidArgumentException when name is invalid
      */
-    public function __construct($name, TypeOutlineInterface $type)
+    public function __construct($name, TypeOutlineInterface $type, $nullable = false)
     {
         $this->setName($name);
         $this->setType($type);
+        $this->setIsNullable($nullable);
     }
 
     /**

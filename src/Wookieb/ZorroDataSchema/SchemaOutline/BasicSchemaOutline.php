@@ -8,6 +8,7 @@ use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\BooleanOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\ByteOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\DateOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\DoubleOutline;
+use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\ExceptionOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\FloatOutline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\Integer16Outline;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\Integer32Outline;
@@ -49,6 +50,8 @@ class BasicSchemaOutline extends SchemaOutline
 
         $this->addTypeOutline(new BinaryOutline());
         $this->addTypeOutline(new BinaryOutline('bin'));
+
+        $this->addTypeOutline(new ExceptionOutline());
 
         $this->addDynamicTypeOutline(new CollectionDynamicTypeOutline($this));
         $this->addDynamicTypeOutline(new ChoiceDynamicTypeOutline($this));

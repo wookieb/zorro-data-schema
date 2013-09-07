@@ -121,6 +121,9 @@ class ClassTypeBuilderTest extends ZorroUnit
             ->addProperty(
                 $this->propertyOutline('granddaughter')
                     ->setDefaultValue('is young')
+            )
+            ->addProperty(
+                $this->propertyOutline('everyNumber')
             );
 
         $this->classMap->registerClass('vacuum', 'VacuumZooBridge')
@@ -143,6 +146,10 @@ class ClassTypeBuilderTest extends ZorroUnit
             ->addPropertyImplementation(
                 $this->propertyImplementation('granddaughter')
                     ->setGetter('getGranddaughter')
+            )
+            ->addPropertyImplementation(
+                $this->propertyImplementation('everyNumber')
+                    ->setTargetPropertyName('notEveryNumber')
             );
 
         $this->implementation->registerClassTypeImplementation($classImplementation);
@@ -168,6 +175,10 @@ class ClassTypeBuilderTest extends ZorroUnit
                 $this->property('granddaughter')
                     ->setDefaultValue('is young')
                     ->setGetterName('getGranddaughter')
+            )
+            ->addProperty(
+                $this->property('everyNumber')
+                    ->setTargetPropertyName('notEveryNumber')
             );
 
         $result = $this->object->generate($outline, $this->implementation);
