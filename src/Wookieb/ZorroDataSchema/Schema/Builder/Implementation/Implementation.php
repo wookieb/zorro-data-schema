@@ -3,7 +3,6 @@
 namespace Wookieb\ZorroDataSchema\Schema\Builder\Implementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMap;
 use Wookieb\ZorroDataSchema\Schema\Builder\ClassMap\ClassMapInterface;
-use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style\StandardStyles;
 
 
 /**

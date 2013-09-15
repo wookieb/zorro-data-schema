@@ -84,4 +84,14 @@ class StringTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->object->isTargetType(1));
         $this->assertFalse($this->object->isTargetType($this->toStringObject));
     }
+
+    public function testGetTypeCheck()
+    {
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(''));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType('test'));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(1));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType($this->toStringObject));
+
+        $this->assertSame('strings', $this->object->getTypeCheck()->getTypeDescription());
+    }
 }

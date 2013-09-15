@@ -55,4 +55,13 @@ class FloatTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->object->isTargetType(2));
         $this->assertFalse($this->object->isTargetType(false));
     }
+
+    public function testValuePassTypeCheckIfIsAFloat()
+    {
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(1.1));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(2));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(false));
+
+        $this->assertSame('doubles', $this->object->getTypeCheck()->getTypeDescription());
+    }
 }

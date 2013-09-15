@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+
 use Wookieb\Assert\Assert;
 use Wookieb\ZorroDataSchema\Exception\NoDefaultValueException;
 

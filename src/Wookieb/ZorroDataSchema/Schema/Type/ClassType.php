@@ -1,7 +1,9 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+
 use Wookieb\Assert\Assert;
+use Wookieb\TypeCheck\ObjectTypeCheck;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 
@@ -121,7 +123,10 @@ class ClassType extends AbstractClassType
     public function extract($value)
     {
         if (!$this->isTargetType($value)) {
-            throw new InvalidValueException('Value to extract must be an object of class "'.$this->class.'"');
+            $msg = vsprintf('Invalid value to extract. Only %s allowed', array(
+                $this->getTypeCheck()->getTypeDescription()
+            ));
+            throw new InvalidValueException($msg);
         }
 
         $data = array();
@@ -230,5 +235,10 @@ class ClassType extends AbstractClassType
     public function isSubclassOf($name)
     {
         return $this->parentType && ($this->parentType->getName() === $name || $this->parentType->isSubclassOf($name));
+    }
+
+    protected function createTypeCheck()
+    {
+        return new ObjectTypeCheck($this->class);
     }
 }

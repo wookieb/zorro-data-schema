@@ -10,7 +10,7 @@ use Wookieb\Assert\Assert;
  *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-abstract class AbstractClassType implements TypeInterface
+abstract class AbstractClassType extends AbstractTypeCheckCachingType
 {
     private $name;
     protected $class;

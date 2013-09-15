@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Tests\Schema\Type;
+
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Wookieb\ZorroDataSchema\Schema\Type\EnumType;
 use Wookieb\ZorroDataSchema\Tests\ZorroUnit;
@@ -109,5 +110,15 @@ class EnumTypeTest extends ZorroUnit
         $this->assertTrue($this->object->isTargetType(1));
         $this->assertFalse($this->object->isTargetType(100));
         $this->assertFalse($this->object->isTargetType('JEANS'));
+    }
+
+    public function testGetTypeCheck()
+    {
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(1));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(100));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType('JEANS'));
+
+        $this->assertSame('one of enum option (1 - YOUNG, 2 - JEANS, 10 - KEYBOARD)',
+            $this->object->getTypeCheck()->getTypeDescription());
     }
 }

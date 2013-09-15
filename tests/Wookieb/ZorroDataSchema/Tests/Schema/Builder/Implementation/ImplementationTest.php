@@ -8,7 +8,6 @@ use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\ClassTypeImplementatio
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\GlobalClassTypeImplementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Implementation;
 use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style\CamelCaseStyle;
-use Wookieb\ZorroDataSchema\Schema\Builder\Implementation\Style\StandardStyles;
 use Wookieb\ZorroDataSchema\Tests\ZorroUnit;
 
 class ImplementationTest extends ZorroUnit

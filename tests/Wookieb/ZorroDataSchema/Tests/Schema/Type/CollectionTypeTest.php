@@ -4,6 +4,7 @@
 namespace Wookieb\ZorroDataSchema\Tests\Schema\Type;
 
 
+use Wookieb\TypeCheck\TypeCheck;
 use Wookieb\ZorroDataSchema\Schema\Type\CollectionType;
 use Wookieb\ZorroDataSchema\Schema\Type\TypeInterface;
 use Wookieb\ZorroDataSchema\Tests\ZorroUnit;
@@ -61,6 +62,18 @@ class CollectionTypeTest extends ZorroUnit
 
         $tab = range(1, 10);
         $this->assertFalse($this->object->isTargetType($tab));
+    }
+
+    public function testGetTypeCheck()
+    {
+        $this->type->expects($this->once())
+            ->method('getTypeCheck')
+            ->will($this->returnValue(TypeCheck::strings()));
+
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(array(1, 2, 'foo')));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(array('foo', 'bar')));
+
+        $this->assertSame('traversable structures that contains strings', $this->object->getTypeCheck()->getTypeDescription());
     }
 
     public function testCreateShouldAcceptOnlyArraysAndTraversableObjects()

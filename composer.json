@@ -9,10 +9,11 @@
             "email": "lukasz.kuzynski@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "symfony/config": "2.3.*",
-        "wookieb/assert": "0.1",
+        "wookieb/assert": "0.*",
+        "wookieb/map": "0.1.2",
+        "wookieb/type-check": "0.*",
         "php": ">=5.3.3"
     },
     "require-dev": {

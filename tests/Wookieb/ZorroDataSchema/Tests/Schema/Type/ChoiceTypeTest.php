@@ -47,11 +47,19 @@ class ChoiceTypeTest extends ZorroUnit
 
     public function testIsTargetType()
     {
-        // http://strangenamesasaservice.nodejitsu.com/index.htm 502 :(
-        $this->assertFalse($this->object->isTargetType('elo'));
-
+        $this->assertFalse($this->object->isTargetType('foo'));
         $this->assertTrue($this->object->isTargetType(123));
         $this->assertTrue($this->object->isTargetType(new \stdClass));
+    }
+
+    public function testGetTypeCheck()
+    {
+        $this->assertFalse($this->object->getTypeCheck()->isValidType('foo'));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(123));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(new \stdClass));
+
+        $this->assertSame('integers in range -9223372036854775808 to 9223372036854775807, instances of stdClass',
+            $this->object->getTypeCheck()->getTypeDescription());
     }
 
     public function testExtractInteger()

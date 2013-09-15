@@ -69,4 +69,12 @@ class DateTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->object->isTargetType(new \DateTime()));
         $this->assertFalse($this->object->isTargetType(false));
     }
+
+    public function testValuePassTypeCheckIfIsADatetimeObject()
+    {
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(new \DateTime()));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(false));
+
+        $this->assertSame('instances of DateTime', $this->object->getTypeCheck()->getTypeDescription());
+    }
 }

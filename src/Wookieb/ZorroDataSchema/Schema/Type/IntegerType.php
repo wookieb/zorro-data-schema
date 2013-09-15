@@ -1,6 +1,8 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+
+use Wookieb\TypeCheck\CallbackTypeCheck;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 
@@ -10,14 +12,15 @@ use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
  *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class IntegerType implements TypeInterface
+class IntegerType extends AbstractTypeCheckCachingType
 {
     private $numOfBites = 64;
 
     private static $maxValues = array(
         8 => 127,
         16 => 32767,
-        32 => 2147483647
+        32 => 2147483647,
+        64 => PHP_INT_MAX
     );
 
     /**
@@ -73,16 +76,33 @@ class IntegerType implements TypeInterface
         return $this->closeInRange($value);
     }
 
-    private function isInRange($value)
-    {
-        return $this->numOfBites >= 64 || $value <= self::$maxValues[$this->numOfBites];
-    }
-
     /**
      * {@inheritDoc}
      */
     public function isTargetType($value)
     {
-        return is_int($value) && $this->isInRange($value);
+        return $this->getTypeCheck()->isValidType($value);
+    }
+
+    /**
+     * Returns max value of integers accepted by this type
+     *
+     * @return integer
+     */
+    public function getMaxValue()
+    {
+        return self::$maxValues[$this->numOfBites];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function createTypeCheck()
+    {
+        $maxValue = $this->getMaxValue();
+        $numOfBites = $this->numOfBites;
+        return new CallbackTypeCheck(function ($value) use ($maxValue, $numOfBites) {
+            return is_int($value) && ($numOfBites >= 64 || ($value <= $maxValue && $value >= -$maxValue - 1));
+        }, 'integers in range '.(-$maxValue - 1).' to '.$maxValue);
     }
 }

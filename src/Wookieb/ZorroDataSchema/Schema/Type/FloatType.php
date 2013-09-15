@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+use Wookieb\TypeCheck\TypeCheck;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 /**
@@ -42,5 +43,13 @@ class FloatType implements TypeInterface
     public function isTargetType($value)
     {
         return is_float($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTypeCheck()
+    {
+        return TypeCheck::floats();
     }
 }

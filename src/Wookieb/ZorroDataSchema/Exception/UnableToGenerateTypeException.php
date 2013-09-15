@@ -3,7 +3,6 @@
 namespace Wookieb\ZorroDataSchema\Exception;
 use Wookieb\ZorroDataSchema\SchemaOutline\TypeOutline\TypeOutlineInterface;
 
-
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */

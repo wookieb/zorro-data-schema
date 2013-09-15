@@ -11,7 +11,6 @@ use Wookieb\ZorroDataSchema\Schema\Schema;
 use Wookieb\ZorroDataSchema\Schema\SchemaInterface;
 use Wookieb\ZorroDataSchema\Schema\Type\AbstractClassType;
 use Wookieb\ZorroDataSchema\Schema\Type\ClassType;
-use Wookieb\ZorroDataSchema\Schema\Type\IntegerType;
 use Wookieb\ZorroDataSchema\Schema\Type\PropertyDefinition;
 use Wookieb\ZorroDataSchema\Schema\Type\StringType;
 use Wookieb\ZorroDataSchema\Schema\Type\TypeInterface;

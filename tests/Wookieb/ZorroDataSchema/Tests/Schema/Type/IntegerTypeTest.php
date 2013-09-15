@@ -1,5 +1,6 @@
 <?php
 namespace Wookieb\ZorroDataSchema\Tests\Schema\Type;
+
 use Wookieb\ZorroDataSchema\Schema\Type\IntegerType;
 
 class IntegerTypeTest extends \PHPUnit_Framework_TestCase
@@ -41,7 +42,7 @@ class IntegerTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(2147483647, $this->object->create(2847483647));
     }
 
-    public function testValueHasTargetTypeIfIsAnIntegerAndInLessThanMaxValueForGivenNumOfBites()
+    public function testValueHasTargetTypeIfIsAnIntegerAndLessThanMaxValueForGivenNumOfBites()
     {
         $this->assertTrue($this->object->isTargetType(1));
         $this->assertFalse($this->object->isTargetType(false));
@@ -50,8 +51,28 @@ class IntegerTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->object->isTargetType(221));
         $this->assertFalse($this->object->isTargetType(10134));
         $this->assertTrue($this->object->isTargetType(127));
+        $this->assertTrue($this->object->isTargetType(-128));
+        $this->assertFalse($this->object->isTargetType(-129));
     }
 
+    public function testValuePassTypeCheckIfIsAnIntegerAndLessThanMaxValueForGivenNumOfBites()
+    {
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(1));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(false));
+
+        $this->assertSame('integers in range '.(-PHP_INT_MAX-1).' to '.PHP_INT_MAX,
+            $this->object->getTypeCheck()->getTypeDescription());
+
+        $this->object = new IntegerType(8);
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(221));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(10134));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(127));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(-128));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(-129));
+
+        $this->assertSame('integers in range -128 to 127',
+            $this->object->getTypeCheck()->getTypeDescription());
+    }
 
     public function testThrowsExceptionWhenInvalidValueProvidedToExtract()
     {

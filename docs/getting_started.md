@@ -68,6 +68,7 @@ List of available types and their representation in PHP
 | int64, integer64, long         | integer (no max value)         |
 | string                         | string                         |
 | Exception (predefined class)   | Exception                      |
+| map<type, type>                | Wookieb/Map/MapInterface       |
 
 ### Choice type
 

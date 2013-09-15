@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+use Wookieb\TypeCheck\TypeCheck;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 /**
@@ -46,10 +47,18 @@ class StringType implements TypeInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function isTargetType($value)
     {
         return is_string($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTypeCheck()
+    {
+        return TypeCheck::strings();
     }
 }

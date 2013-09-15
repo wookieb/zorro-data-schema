@@ -48,6 +48,7 @@ class CollectionDynamicTypeOutline implements DynamicTypeOutlineInterface
             throw new UnableToGenerateTypeOutlineException('Invalid name to generate collection outline');
         }
         $type = $this->schemaOutline->getTypeOutline($typeName);
+        $name = 'collection<'.$type->getName().'>';
         return new CollectionOutline($name, $type);
     }
 

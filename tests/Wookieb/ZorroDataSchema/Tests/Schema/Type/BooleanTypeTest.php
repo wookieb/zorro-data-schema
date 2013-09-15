@@ -40,4 +40,14 @@ class BooleanTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->object->isTargetType(-1));
         $this->assertFalse($this->object->isTargetType(''));
     }
+
+    public function testGetTypeCheck()
+    {
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(true));
+        $this->assertTrue($this->object->getTypeCheck()->isValidType(false));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(-1));
+        $this->assertFalse($this->object->getTypeCheck()->isValidType(''));
+
+        $this->assertSame('booleans', $this->object->getTypeCheck()->getTypeDescription());
+    }
 }

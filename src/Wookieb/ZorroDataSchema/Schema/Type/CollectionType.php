@@ -2,6 +2,7 @@
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
 use Wookieb\Assert\Assert;
+use Wookieb\TypeCheck\TraversableOf;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 /**
@@ -9,7 +10,7 @@ use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
  *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class CollectionType implements TypeInterface
+class CollectionType extends AbstractTypeCheckCachingType
 {
     /**
      * @var TypeInterface
@@ -110,5 +111,13 @@ class CollectionType implements TypeInterface
             }
         }
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function createTypeCheck()
+    {
+        return new TraversableOf($this->type->getTypeCheck());
     }
 }

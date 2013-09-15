@@ -1,5 +1,7 @@
 <?php
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+
+use Wookieb\TypeCheck\TypeCheckInterface;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 /**
@@ -26,10 +28,17 @@ interface TypeInterface
     function extract($value);
 
     /**
-     * Check whether value is target type
+     * Check whether value is a target type
      *
      * @param mixed $value
      * @return boolean
      */
     function isTargetType($value);
+
+    /**
+     * Returns a type check object
+     *
+     * @return TypeCheckInterface
+     */
+    function getTypeCheck();
 }

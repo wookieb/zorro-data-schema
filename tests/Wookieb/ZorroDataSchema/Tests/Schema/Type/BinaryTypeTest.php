@@ -1,5 +1,6 @@
 <?php
 namespace Wookieb\ZorroDataSchema\Tests\Schema\Type;
+
 use Wookieb\ZorroDataSchema\Schema\Type\BinaryType;
 
 class BinaryTypeTest extends \PHPUnit_Framework_TestCase

@@ -78,6 +78,15 @@ class ClassTypeTest extends ZorroUnit
         $this->assertFalse($this->intentionalQuiver->isTargetType('Wookieb\Tests\Resources\IntentionalQuiver'));
     }
 
+    public function testGetTypeCheck()
+    {
+        $object = new IntentionalQuiver();
+        $this->assertTrue($this->intentionalQuiver->getTypeCheck()->isValidType($object));
+        $this->assertFalse($this->intentionalQuiver->getTypeCheck()->isValidType('Wookieb\Tests\Resources\IntentionalQuiver'));
+        $this->assertSame('instances of Wookieb\Tests\Resources\IntentionalQuiver',
+            $this->intentionalQuiver->getTypeCheck()->getTypeDescription());
+    }
+
     public function testCreateObjectWithoutParentAndPropertiesWithoutObject()
     {
         $result = $this->qualifiedGerman->create(array('yellowishYugoslavian' => 'tiny yard'));
@@ -185,6 +194,12 @@ class ClassTypeTest extends ZorroUnit
         );
         $result = $this->qualifiedGerman->extract(new QualifiedGerman());
         $this->assertSame($expected, $result);
+    }
+
+    public function testExceptionWhenInvalidDataProvidedToExtract() {
+        $msg = 'Invalid value to extract. Only instances of Wookieb\Tests\Resources\QualifiedGerman allowed';
+        $this->setExpectedException('Wookieb\ZorroDataSchema\Exception\InvalidValueException', $msg);
+        $this->qualifiedGerman->extract(false);
     }
 
     public function testExtractObjectWithParent()

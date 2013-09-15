@@ -2,12 +2,13 @@
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
 use Wookieb\Assert\Assert;
+use Wookieb\TypeCheck\MultipleTypesCheck;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class ChoiceType implements TypeInterface
+class ChoiceType extends AbstractTypeCheckCachingType
 {
     private $types = array();
 
@@ -115,5 +116,13 @@ class ChoiceType implements TypeInterface
             '__type' => $typeName,
             'data' => $type->extract($value)
         );
+    }
+
+    protected function createTypeCheck()
+    {
+        $typeChecks = array_map(function (TypeInterface $type) {
+            return $type->getTypeCheck();
+        }, $this->types);
+        return new MultipleTypesCheck($typeChecks);
     }
 }

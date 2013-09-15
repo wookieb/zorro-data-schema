@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+use Wookieb\TypeCheck\TypeCheck;
 
 
 /**
@@ -32,5 +33,13 @@ class BooleanType implements TypeInterface
     public function isTargetType($value)
     {
         return is_bool($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTypeCheck()
+    {
+        return TypeCheck::booleans();
     }
 }

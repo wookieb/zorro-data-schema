@@ -4,12 +4,13 @@ namespace Wookieb\ZorroDataSchema\Schema\Type;
 use Wookieb\Assert\Assert;
 use Wookieb\ZorroDataSchema\Exception\InvalidTypeException;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
+use Wookieb\ZorroDataSchema\Schema\Type\TypeCheck\EnumTypeCheck;
 
 
 /**
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class EnumType implements TypeInterface
+class EnumType extends AbstractTypeCheckCachingType
 {
     private $name;
     private $options = array();
@@ -118,5 +119,13 @@ class EnumType implements TypeInterface
     public function isTargetType($value)
     {
         return is_int($value) && $this->isValidValue($value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function createTypeCheck()
+    {
+        return new EnumTypeCheck($this);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 namespace Wookieb\ZorroDataSchema\Schema\Type;
+use Wookieb\TypeCheck\ObjectTypeCheck;
 use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
 
 
@@ -9,7 +10,7 @@ use Wookieb\ZorroDataSchema\Exception\InvalidValueException;
  *
  * @author Łukasz Kużyński "wookieb" <lukasz.kuzynski@gmail.com>
  */
-class DateType implements TypeInterface
+class DateType extends AbstractTypeCheckCachingType
 {
     /**
      * {@inheritDoc}
@@ -49,5 +50,10 @@ class DateType implements TypeInterface
     public function isTargetType($value)
     {
         return $value instanceof \DateTime;
+    }
+
+    protected function createTypeCheck()
+    {
+        return new ObjectTypeCheck('\DateTime');
     }
 }
