@@ -99,9 +99,3 @@ Array
 ## Documentation
 [see documentation](docs/getting_started.md)
 
-## Status
-The API is experimental. Not tested on production yet.
-
-## TODO
-* generator of classes
-* "map" type
